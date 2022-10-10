@@ -10,7 +10,7 @@ function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route
-          path={AppRoute.Catalog}
+          path={AppRoute.Root}
           element={<Catalog />}
         />
         <Route
