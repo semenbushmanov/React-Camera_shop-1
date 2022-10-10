@@ -47,8 +47,7 @@ function ProductCard({isInBasket}: ProductCardProps): JSX.Element {
           </Link>
           :
           <button className="btn btn--purple product-card__btn" type="button">Купить
-          </button>
-        }
+          </button>}
         <Link className="btn btn--transparent" to={AppRoute.Item}>Подробнее
         </Link>
       </div>
