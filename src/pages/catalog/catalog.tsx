@@ -2,6 +2,7 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Banner from '../../components/banner/banner';
 import CatalogFilter from '../../components/catalog-filter/catalog-filter';
+import CatalogSorter from '../../components/catalog-sorter/catalog-sorter';
 
 function Catalog(): JSX.Element {
   return (
@@ -31,41 +32,7 @@ function Catalog(): JSX.Element {
               <div className="page-content__columns">
                 <CatalogFilter />
                 <div className="catalog__content">
-                  <div className="catalog-sort">
-                    <form action="#">
-                      <div className="catalog-sort__inner">
-                        <p className="title title--h5">Сортировать:</p>
-                        <div className="catalog-sort__type">
-                          <div className="catalog-sort__btn-text">
-                            <input type="radio" id="sortPrice" name="sort" defaultChecked/>
-                            <label htmlFor="sortPrice">по цене</label>
-                          </div>
-                          <div className="catalog-sort__btn-text">
-                            <input type="radio" id="sortPopular" name="sort"/>
-                            <label htmlFor="sortPopular">по популярности</label>
-                          </div>
-                        </div>
-                        <div className="catalog-sort__order">
-                          <div className="catalog-sort__btn catalog-sort__btn--up">
-                            <input type="radio" id="up" name="sort-icon" defaultChecked aria-label="По возрастанию"/>
-                            <label htmlFor="up">
-                              <svg width="16" height="14" aria-hidden="true">
-                                <use xlinkHref="#icon-sort"></use>
-                              </svg>
-                            </label>
-                          </div>
-                          <div className="catalog-sort__btn catalog-sort__btn--down">
-                            <input type="radio" id="down" name="sort-icon" aria-label="По убыванию"/>
-                            <label htmlFor="down">
-                              <svg width="16" height="14" aria-hidden="true">
-                                <use xlinkHref="#icon-sort"></use>
-                              </svg>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+                  <CatalogSorter />
                   <div className="cards catalog__cards">
                     <div className="product-card">
                       <div className="product-card__img">
