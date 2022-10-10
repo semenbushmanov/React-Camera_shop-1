@@ -1,5 +1,5 @@
 export enum AppRoute {
-  Catalog = '/',
+  Root = '/',
   Item = '/item',
   Basket = '/basket',
 }

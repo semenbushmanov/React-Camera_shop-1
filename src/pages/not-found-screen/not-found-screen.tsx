@@ -6,7 +6,7 @@ function NotFoundScreen(): JSX.Element {
     <section>
       <h1>404</h1>
       <h2>Page not found</h2>
-      <Link to={AppRoute.Catalog}>Back to Homepage</Link>
+      <Link to={AppRoute.Root}>Back to Homepage</Link>
     </section>
   );
 }
