@@ -3,6 +3,7 @@ import Footer from '../../components/footer/footer';
 import Banner from '../../components/banner/banner';
 import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSorter from '../../components/catalog-sorter/catalog-sorter';
+import PaginationList from '../../components/pagination-list/pagination-list';
 
 function Catalog(): JSX.Element {
   return (
@@ -371,18 +372,7 @@ function Catalog(): JSX.Element {
                       </div>
                     </div>
                   </div>
-                  <div className="pagination">
-                    <ul className="pagination__list">
-                      <li className="pagination__item"><a className="pagination__link pagination__link--active" href="1">1</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link" href="2">2</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link" href="3">3</a>
-                      </li>
-                      <li className="pagination__item"><a className="pagination__link pagination__link--text" href="2">Далее</a>
-                      </li>
-                    </ul>
-                  </div>
+                  <PaginationList />
                 </div>
               </div>
             </div>
