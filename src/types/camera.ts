@@ -15,6 +15,8 @@ export type Camera = {
   reviewCount: number;
 };
 
+export type Cameras = Camera[];
+
 export type Review = {
   id: string;
   userName: string;

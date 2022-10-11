@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Catalog from '../../pages/catalog/catalog';
 import Item from '../../pages/item/item';
@@ -7,26 +7,24 @@ import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 
 function App(): JSX.Element {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path={AppRoute.Root}
-          element={<Catalog />}
-        />
-        <Route
-          path={AppRoute.Item}
-          element={<Item />}
-        />
-        <Route
-          path={AppRoute.Basket}
-          element={<Basket />}
-        />
-        <Route
-          path="*"
-          element={<NotFoundScreen />}
-        />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route
+        path={AppRoute.Root}
+        element={<Catalog />}
+      />
+      <Route
+        path={AppRoute.Item}
+        element={<Item />}
+      />
+      <Route
+        path={AppRoute.Basket}
+        element={<Basket />}
+      />
+      <Route
+        path="*"
+        element={<NotFoundScreen />}
+      />
+    </Routes>
   );
 }
 

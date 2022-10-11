@@ -11,3 +11,8 @@ export enum APIRoute {
   Coupons = '/coupons',
   Orders = '/orders',
 }
+
+export enum NameSpace {
+  Data = 'DATA',
+  User = 'USER',
+}
