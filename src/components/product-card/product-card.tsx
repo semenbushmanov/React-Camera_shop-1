@@ -9,6 +9,7 @@ type ProductCardProps = {
 
 function ProductCard({camera, isInBasket}: ProductCardProps): JSX.Element {
   const { name, rating, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, reviewCount } = camera;
+  const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
   return (
     <div className="product-card">
@@ -39,7 +40,7 @@ function ProductCard({camera, isInBasket}: ProductCardProps): JSX.Element {
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
         </div>
         <p className="product-card__title">{name}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{price} ₽
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{formattedPrice} ₽
         </p>
       </div>
       <div className="product-card__buttons">
