@@ -1,6 +1,7 @@
 export enum AppRoute {
   Root = '/',
   Item = '/item',
+  ItemId = '/item/:id',
   Basket = '/basket',
 }
 

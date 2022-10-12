@@ -13,7 +13,7 @@ function App(): JSX.Element {
         element={<Catalog />}
       />
       <Route
-        path={AppRoute.Item}
+        path={AppRoute.ItemId}
         element={<Item />}
       />
       <Route
