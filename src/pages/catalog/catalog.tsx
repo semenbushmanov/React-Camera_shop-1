@@ -5,10 +5,26 @@ import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSorter from '../../components/catalog-sorter/catalog-sorter';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import ProductCardsList from '../../components/product-cards-list/product-cards-list';
-import { Link } from 'react-router-dom';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
+import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useAppSelector } from '../../hooks';
+import { getCameras } from '../../store/cameras-data/selectors';
 
 function Catalog(): JSX.Element {
+  const { page } = useParams();
+  const cameras = useAppSelector(getCameras);
+  const pagesTotal = Math.ceil(cameras.length / 9);
+  const currentPage = page ? Number(page) : 1;
+
+  if (pagesTotal) {
+    if (currentPage > pagesTotal || currentPage < 1 || isNaN(currentPage)) {
+      return (
+        <NotFoundScreen />
+      );
+    }
+  }
+
   return (
     <div className="wrapper">
       <Header />
@@ -38,8 +54,8 @@ function Catalog(): JSX.Element {
                 <CatalogFilter />
                 <div className="catalog__content">
                   <CatalogSorter />
-                  <ProductCardsList />
-                  <PaginationList />
+                  <ProductCardsList cameras={cameras} currentPage={currentPage}/>
+                  <PaginationList pagesTotal={pagesTotal} currentPage={currentPage}/>
                 </div>
               </div>
             </div>

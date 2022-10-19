@@ -1,10 +1,15 @@
 import ProductCard from '../product-card/product-card';
-import { useAppSelector } from '../../hooks';
-import { getCameras } from '../../store/cameras-data/selectors';
+import { Cameras } from '../../types/camera';
 
-function ProductCardsList(): JSX.Element {
-  const cameras = useAppSelector(getCameras);
-  const camerasToRender = cameras.slice(0, 9);
+type ProductCardsListProps = {
+  cameras: Cameras;
+  currentPage: number;
+};
+
+function ProductCardsList({cameras, currentPage}: ProductCardsListProps): JSX.Element {
+  const startingPoint = (currentPage - 1) * 9;
+  const finalPoint = startingPoint + 9;
+  const camerasToRender = cameras.slice(startingPoint, finalPoint);
 
   return (
     <div className="cards catalog__cards">
