@@ -1,15 +1,21 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Camera } from '../../types/camera';
+import { memo } from 'react';
 
 type ProductCardProps = {
   camera: Camera;
   isInBasket: boolean;
+  openAddItemPopup: (camera: Camera) => void;
 };
 
-function ProductCard({camera, isInBasket}: ProductCardProps): JSX.Element {
+function ProductCard({camera, isInBasket, openAddItemPopup}: ProductCardProps): JSX.Element {
   const { name, rating, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, reviewCount } = camera;
   const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+  const handleBuyButtonClick = () => {
+    openAddItemPopup(camera);
+  };
 
   return (
     <div className="product-card">
@@ -51,7 +57,7 @@ function ProductCard({camera, isInBasket}: ProductCardProps): JSX.Element {
             </svg>В корзине
           </Link>
           :
-          <button className="btn btn--purple product-card__btn" type="button">Купить
+          <button className="btn btn--purple product-card__btn" type="button" onClick={handleBuyButtonClick}>Купить
           </button>}
         <Link className="btn btn--transparent" to={AppRoute.Item}>Подробнее
         </Link>
@@ -60,4 +66,4 @@ function ProductCard({camera, isInBasket}: ProductCardProps): JSX.Element {
   );
 }
 
-export default ProductCard;
+export default memo(ProductCard);

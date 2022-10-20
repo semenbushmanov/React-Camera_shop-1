@@ -5,17 +5,35 @@ import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSorter from '../../components/catalog-sorter/catalog-sorter';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import ProductCardsList from '../../components/product-cards-list/product-cards-list';
+import CatalogAddItem from '../../components/catalog-add-item/catalog-add-item';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import { useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getCameras } from '../../store/cameras-data/selectors';
+import { Camera } from '../../types/camera';
 
 function Catalog(): JSX.Element {
   const { page } = useParams();
   const cameras = useAppSelector(getCameras);
   const pagesTotal = Math.ceil(cameras.length / 9);
   const currentPage = page ? Number(page) : 1;
+  const [ addItemPopupStatus, setAddItemPopupStatus ] = useState(false);
+  const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
+
+  const openAddItemPopup = useCallback(
+    (camera: Camera) => {
+      setCurrentCamera(camera);
+      setAddItemPopupStatus(true);
+    }, []
+  );
+
+  const closeAddItemPopup = useCallback(
+    () => {
+      setAddItemPopupStatus(false);
+    }, []
+  );
 
   if (pagesTotal) {
     if (currentPage > pagesTotal || currentPage < 1 || isNaN(currentPage)) {
@@ -54,13 +72,18 @@ function Catalog(): JSX.Element {
                 <CatalogFilter />
                 <div className="catalog__content">
                   <CatalogSorter />
-                  <ProductCardsList cameras={cameras} currentPage={currentPage}/>
+                  <ProductCardsList
+                    cameras={cameras}
+                    currentPage={currentPage}
+                    openAddItemPopup={openAddItemPopup}
+                  />
                   <PaginationList pagesTotal={pagesTotal} currentPage={currentPage}/>
                 </div>
               </div>
             </div>
           </section>
         </div>
+        {addItemPopupStatus && <CatalogAddItem camera={currentCamera} closeAddItemPopup={closeAddItemPopup}/>}
       </main>
       <Footer />
     </div>
