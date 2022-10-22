@@ -6,7 +6,7 @@ import { AppRoute } from '../../const';
 function Basket(): JSX.Element {
   return (
     <div className="wrapper">
-      <Header basketCount/>
+      <Header basketItemsCount={3}/>
       <main>
         <div className="page-content">
           <div className="breadcrumbs">

@@ -10,13 +10,16 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { RequestStatus } from '../../const';
+import { useAppSelector } from '../../hooks';
 import { useFetchCamera } from '../../hooks/api-hooks/useFetchCamera';
+import { getBasketItems } from '../../store/basket/selectors';
 import { formatPrice } from '../../utils/common';
 
 function Item(): JSX.Element {
   const { id } = useParams();
   const [ camera, status ] = useFetchCamera(id);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
+  const basketItemsCount = useAppSelector(getBasketItems).length;
 
   const toggleAddItemModal = useCallback(
     () => {
@@ -50,7 +53,7 @@ function Item(): JSX.Element {
 
   return (
     <div className="wrapper">
-      <Header basketCount/>
+      <Header basketItemsCount={basketItemsCount}/>
       <main>
         <div className="page-content">
           <BreadCrumbs item={name}/>

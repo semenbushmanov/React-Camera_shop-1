@@ -1,6 +1,8 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { Camera } from '../../types/camera';
 import { formatPrice } from '../../utils/common';
+import { useAppDispatch } from '../../hooks/index';
+import { addItem } from '../../store/basket/basket';
 
 type AddItemModalProps = {
   camera: Camera;
@@ -8,10 +10,16 @@ type AddItemModalProps = {
 };
 
 function AddItemModal({closeAddItemModal, camera}: AddItemModalProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const [isAddButtonFocused, setAddButtonFocused] = useState(false);
   const addItemButton = useRef<HTMLButtonElement | null>(null);
   const closeButton = useRef<HTMLButtonElement | null>(null);
-  const {name, vendorCode, type, level, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x} = camera;
+  const {id, name, vendorCode, type, level, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x} = camera;
+
+  const handleAddItemButton = () => {
+    dispatch(addItem(id));
+    closeAddItemModal();
+  };
 
   useEffect(() => {
     const handleKeyDown = (evt: KeyboardEvent) => {
@@ -68,7 +76,7 @@ function AddItemModal({closeAddItemModal, camera}: AddItemModalProps): JSX.Eleme
             </div>
           </div>
           <div className="modal__buttons">
-            <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button" ref={addItemButton}>
+            <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button" ref={addItemButton} onClick={handleAddItemButton}>
               <svg width="24" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-add-basket"></use>
               </svg>Добавить в корзину

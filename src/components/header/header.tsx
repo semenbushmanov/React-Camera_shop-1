@@ -2,10 +2,12 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 type HeaderProps = {
-  basketCount?: boolean;
+  basketItemsCount?: number;
 };
 
-function Header({basketCount}: HeaderProps): JSX.Element {
+function Header({basketItemsCount}: HeaderProps): JSX.Element {
+  const isBasketCountVisible = basketItemsCount ? basketItemsCount !== 0 : false;
+
   return (
     <header className="header" id="header">
       <div className="container">
@@ -51,7 +53,7 @@ function Header({basketCount}: HeaderProps): JSX.Element {
         <Link className="header__basket-link" to={AppRoute.Basket}>
           <svg width="16" height="16" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg>{basketCount && <span className="header__basket-count">3</span>}
+          </svg>{isBasketCountVisible && <span className="header__basket-count">{basketItemsCount}</span>}
         </Link>
       </div>
     </header>

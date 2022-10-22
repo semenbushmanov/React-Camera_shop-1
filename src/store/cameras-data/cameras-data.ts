@@ -6,7 +6,7 @@ import { fetchCamerasAction, fetchPromoAction } from '../api-actions';
 
 const initialState: CamerasData = {
   cameras: [],
-  isDataLoaded:false,
+  isDataLoading:false,
   promo: {} as Promo,
 };
 
@@ -17,11 +17,11 @@ export const camerasData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCamerasAction.pending, (state) => {
-        state.isDataLoaded = true;
+        state.isDataLoading = true;
       })
       .addCase(fetchCamerasAction.fulfilled, (state, action) => {
         state.cameras = action.payload;
-        state.isDataLoaded = false;
+        state.isDataLoading = false;
       })
       .addCase(fetchPromoAction.fulfilled, (state, action) => {
         state.promo = action.payload;
