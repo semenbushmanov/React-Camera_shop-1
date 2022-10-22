@@ -3,16 +3,26 @@ import Footer from '../../components/footer/footer';
 import SimilarProductSlider from '../../components/similar-product-slider/similar-product-slider';
 import ReviewBlock from '../../components/review-block/review-block';
 import RatingStars from '../../components/rating-stars/rating-stars';
+import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
+import AddItemModal from '../../components/add-item-modal/add-item-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { Link, useParams } from 'react-router-dom';
-import { AppRoute, RequestStatus } from '../../const';
+import { useState, useCallback } from 'react';
+import { useParams } from 'react-router-dom';
+import { RequestStatus } from '../../const';
 import { useFetchCamera } from '../../hooks/api-hooks/useFetchCamera';
 import { formatPrice } from '../../utils/common';
 
 function Item(): JSX.Element {
   const { id } = useParams();
   const [ camera, status ] = useFetchCamera(id);
+  const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
+
+  const toggleAddItemModal = useCallback(
+    () => {
+      setAddItemModalOpen(!isAddItemModalOpen);
+    }, [isAddItemModalOpen]
+  );
 
   if (!id || status === RequestStatus.Error) {
     return <NotFoundScreen />;
@@ -43,28 +53,7 @@ function Item(): JSX.Element {
       <Header basketCount/>
       <main>
         <div className="page-content">
-          <div className="breadcrumbs">
-            <div className="container">
-              <ul className="breadcrumbs__list">
-                <li className="breadcrumbs__item">
-                  <Link className="breadcrumbs__link" to={AppRoute.Root}>Главная
-                    <svg width="5" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-arrow-mini"></use>
-                    </svg>
-                  </Link>
-                </li>
-                <li className="breadcrumbs__item">
-                  <Link className="breadcrumbs__link" to={AppRoute.Root}>Каталог
-                    <svg width="5" height="8" aria-hidden="true">
-                      <use xlinkHref="#icon-arrow-mini"></use>
-                    </svg>
-                  </Link>
-                </li>
-                <li className="breadcrumbs__item"><span className="breadcrumbs__link breadcrumbs__link--active">{name}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <BreadCrumbs item={name}/>
           <div className="page-content__section">
             <section className="product">
               <div className="container">
@@ -78,7 +67,7 @@ function Item(): JSX.Element {
                   <h1 className="title title--h3">{name}</h1>
                   <RatingStars rating={rating} reviewCount={reviewCount}/>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{formatPrice(price)} ₽</p>
-                  <button className="btn btn--purple" type="button">
+                  <button className="btn btn--purple" type="button" onClick={toggleAddItemModal}>
                     <svg width="24" height="16" aria-hidden="true">
                       <use xlinkHref="#icon-add-basket"></use>
                     </svg>Добавить в корзину
@@ -119,12 +108,13 @@ function Item(): JSX.Element {
           <SimilarProductSlider />
           <ReviewBlock />
         </div>
+        <a className="up-btn" href="#header">
+          <svg width="12" height="18" aria-hidden="true">
+            <use xlinkHref="#icon-arrow2"></use>
+          </svg>
+        </a>
+        {isAddItemModalOpen && <AddItemModal camera={camera} closeAddItemModal={toggleAddItemModal}/>}
       </main>
-      <a className="up-btn" href="#header">
-        <svg width="12" height="18" aria-hidden="true">
-          <use xlinkHref="#icon-arrow2"></use>
-        </svg>
-      </a>
       <Footer />
     </div>
   );

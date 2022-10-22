@@ -5,7 +5,7 @@ import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSorter from '../../components/catalog-sorter/catalog-sorter';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import ProductCardsList from '../../components/product-cards-list/product-cards-list';
-import CatalogAddItem from '../../components/add-item-modal/add-item-modal';
+import AddItemModal from '../../components/add-item-modal/add-item-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -83,7 +83,7 @@ function Catalog(): JSX.Element {
             </div>
           </section>
         </div>
-        {isAddItemModalOpen && <CatalogAddItem camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
+        {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
       </main>
       <Footer />
     </div>

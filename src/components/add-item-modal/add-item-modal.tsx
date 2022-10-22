@@ -2,12 +2,12 @@ import { memo, useEffect, useRef, useState } from 'react';
 import { Camera } from '../../types/camera';
 import { formatPrice } from '../../utils/common';
 
-type CatalogAddItemProps = {
+type AddItemModalProps = {
   camera: Camera;
   closeAddItemModal: () => void;
 };
 
-function CatalogAddItem({closeAddItemModal, camera}: CatalogAddItemProps): JSX.Element {
+function AddItemModal({closeAddItemModal, camera}: AddItemModalProps): JSX.Element {
   const [isAddButtonFocused, setAddButtonFocused] = useState(false);
   const addItemButton = useRef<HTMLButtonElement | null>(null);
   const closeButton = useRef<HTMLButtonElement | null>(null);
@@ -85,4 +85,4 @@ function CatalogAddItem({closeAddItemModal, camera}: CatalogAddItemProps): JSX.E
   );
 }
 
-export default memo(CatalogAddItem);
+export default memo(AddItemModal);
