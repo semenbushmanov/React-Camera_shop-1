@@ -5,10 +5,10 @@ import { memo } from 'react';
 type ProductCardsListProps = {
   cameras: Cameras;
   currentPage: number;
-  openAddItemPopup: (camera: Camera) => void;
+  openAddItemModal: (camera: Camera) => void;
 };
 
-function ProductCardsList({cameras, currentPage, openAddItemPopup}: ProductCardsListProps): JSX.Element {
+function ProductCardsList({cameras, currentPage, openAddItemModal}: ProductCardsListProps): JSX.Element {
   const startingPoint = (currentPage - 1) * 9;
   const finalPoint = startingPoint + 9;
   const camerasToRender = cameras.slice(startingPoint, finalPoint);
@@ -21,7 +21,7 @@ function ProductCardsList({cameras, currentPage, openAddItemPopup}: ProductCards
             key={camera.id}
             camera= {camera}
             isInBasket={false}
-            openAddItemPopup={openAddItemPopup}
+            openAddItemModal={openAddItemModal}
           />)
       )}
     </div>

@@ -5,7 +5,7 @@ import CatalogFilter from '../../components/catalog-filter/catalog-filter';
 import CatalogSorter from '../../components/catalog-sorter/catalog-sorter';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import ProductCardsList from '../../components/product-cards-list/product-cards-list';
-import CatalogAddItem from '../../components/catalog-add-item/catalog-add-item';
+import CatalogAddItem from '../../components/add-item-modal/add-item-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import { useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -19,19 +19,19 @@ function Catalog(): JSX.Element {
   const cameras = useAppSelector(getCameras);
   const pagesTotal = Math.ceil(cameras.length / 9);
   const currentPage = page ? Number(page) : 1;
-  const [ addItemPopupStatus, setAddItemPopupStatus ] = useState(false);
+  const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
 
-  const openAddItemPopup = useCallback(
+  const openAddItemModal = useCallback(
     (camera: Camera) => {
       setCurrentCamera(camera);
-      setAddItemPopupStatus(true);
+      setAddItemModalOpen(true);
     }, []
   );
 
-  const closeAddItemPopup = useCallback(
+  const closeAddItemModal = useCallback(
     () => {
-      setAddItemPopupStatus(false);
+      setAddItemModalOpen(false);
     }, []
   );
 
@@ -75,7 +75,7 @@ function Catalog(): JSX.Element {
                   <ProductCardsList
                     cameras={cameras}
                     currentPage={currentPage}
-                    openAddItemPopup={openAddItemPopup}
+                    openAddItemModal={openAddItemModal}
                   />
                   <PaginationList pagesTotal={pagesTotal} currentPage={currentPage}/>
                 </div>
@@ -83,7 +83,7 @@ function Catalog(): JSX.Element {
             </div>
           </section>
         </div>
-        {addItemPopupStatus && <CatalogAddItem camera={currentCamera} closeAddItemPopup={closeAddItemPopup}/>}
+        {isAddItemModalOpen && <CatalogAddItem camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
       </main>
       <Footer />
     </div>

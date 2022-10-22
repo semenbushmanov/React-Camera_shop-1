@@ -19,3 +19,11 @@ export enum NameSpace {
   Data = 'DATA',
   User = 'USER',
 }
+
+
+export enum RequestStatus {
+  NotStarted,
+  Loading,
+  Success,
+  Error,
+}

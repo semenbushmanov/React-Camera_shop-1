@@ -1,20 +1,21 @@
+import RatingStars from '../rating-stars/rating-stars';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Camera } from '../../types/camera';
 import { memo } from 'react';
+import { formatPrice } from '../../utils/common';
 
 type ProductCardProps = {
   camera: Camera;
   isInBasket: boolean;
-  openAddItemPopup: (camera: Camera) => void;
+  openAddItemModal: (camera: Camera) => void;
 };
 
-function ProductCard({camera, isInBasket, openAddItemPopup}: ProductCardProps): JSX.Element {
-  const { name, rating, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, reviewCount } = camera;
-  const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+function ProductCard({camera, isInBasket, openAddItemModal}: ProductCardProps): JSX.Element {
+  const { id, name, rating, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, reviewCount } = camera;
 
   const handleBuyButtonClick = () => {
-    openAddItemPopup(camera);
+    openAddItemModal(camera);
   };
 
   return (
@@ -26,27 +27,9 @@ function ProductCard({camera, isInBasket, openAddItemPopup}: ProductCardProps): 
         </picture>
       </div>
       <div className="product-card__info">
-        <div className="rate product-card__rate">
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref={rating > 0 ? '#icon-full-star' : '#icon-star'}></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref={rating > 1 ? '#icon-full-star' : '#icon-star'}></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref={rating > 2 ? '#icon-full-star' : '#icon-star'}></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref={rating > 3 ? '#icon-full-star' : '#icon-star'}></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref={rating > 4 ? '#icon-full-star' : '#icon-star'}></use>
-          </svg>
-          <p className="visually-hidden">Рейтинг: {rating}</p>
-          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
-        </div>
+        <RatingStars rating={rating} reviewCount={reviewCount}/>
         <p className="product-card__title">{name}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{formattedPrice} ₽
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{formatPrice(price)} ₽
         </p>
       </div>
       <div className="product-card__buttons">
@@ -59,7 +42,7 @@ function ProductCard({camera, isInBasket, openAddItemPopup}: ProductCardProps): 
           :
           <button className="btn btn--purple product-card__btn" type="button" onClick={handleBuyButtonClick}>Купить
           </button>}
-        <Link className="btn btn--transparent" to={AppRoute.Item}>Подробнее
+        <Link className="btn btn--transparent" to={`${AppRoute.Item}/${id}`}>Подробнее
         </Link>
       </div>
     </div>

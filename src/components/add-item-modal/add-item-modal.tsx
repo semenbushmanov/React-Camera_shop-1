@@ -1,23 +1,23 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { Camera } from '../../types/camera';
+import { formatPrice } from '../../utils/common';
 
 type CatalogAddItemProps = {
   camera: Camera;
-  closeAddItemPopup: () => void;
+  closeAddItemModal: () => void;
 };
 
-function CatalogAddItem({closeAddItemPopup, camera}: CatalogAddItemProps): JSX.Element {
+function CatalogAddItem({closeAddItemModal, camera}: CatalogAddItemProps): JSX.Element {
   const [isAddButtonFocused, setAddButtonFocused] = useState(false);
   const addItemButton = useRef<HTMLButtonElement | null>(null);
   const closeButton = useRef<HTMLButtonElement | null>(null);
   const {name, vendorCode, type, level, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x} = camera;
-  const formattedPrice = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
   useEffect(() => {
     const handleKeyDown = (evt: KeyboardEvent) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        closeAddItemPopup();
+        closeAddItemModal();
       }
 
       if (evt.key === 'Tab') {
@@ -41,10 +41,10 @@ function CatalogAddItem({closeAddItemPopup, camera}: CatalogAddItemProps): JSX.E
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'visible';
     };
-  }, [closeAddItemPopup, isAddButtonFocused]);
+  }, [closeAddItemModal, isAddButtonFocused]);
 
   return (
-    <div className="modal is-active" onClick={closeAddItemPopup}>
+    <div className="modal is-active" onClick={closeAddItemModal}>
       <div className="modal__wrapper">
         <div className="modal__overlay"></div>
         <div className="modal__content" onClick={(evt) => {evt.stopPropagation();}}>
@@ -64,7 +64,7 @@ function CatalogAddItem({closeAddItemPopup, camera}: CatalogAddItemProps): JSX.E
                 <li className="basket-item__list-item">{type} фотокамера</li>
                 <li className="basket-item__list-item">{level} уровень</li>
               </ul>
-              <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{formattedPrice} ₽</p>
+              <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{formatPrice(price)} ₽</p>
             </div>
           </div>
           <div className="modal__buttons">
@@ -74,7 +74,7 @@ function CatalogAddItem({closeAddItemPopup, camera}: CatalogAddItemProps): JSX.E
               </svg>Добавить в корзину
             </button>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" ref={closeButton} onClick={closeAddItemPopup}>
+          <button className="cross-btn" type="button" aria-label="Закрыть попап" ref={closeButton} onClick={closeAddItemModal}>
             <svg width="10" height="10" aria-hidden="true">
               <use xlinkHref="#icon-close"></use>
             </svg>
