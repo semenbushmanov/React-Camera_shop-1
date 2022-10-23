@@ -1,9 +1,11 @@
 export enum AppRoute {
   Root = '/',
   Catalog = '/catalog',
+  CatalogStart = '/catalog/1',
   CatalogPage = '/catalog/:page',
   Item = '/item',
   ItemId = '/item/:id',
+  ItemTab = '/item/:id/:tab',
   Basket = '/basket',
 }
 
@@ -20,10 +22,14 @@ export enum NameSpace {
   Basket = 'BASKET',
 }
 
-
 export enum RequestStatus {
   NotStarted,
   Loading,
   Success,
   Error,
+}
+
+export enum Tab {
+  Description = 'description',
+  Specs = 'specs',
 }

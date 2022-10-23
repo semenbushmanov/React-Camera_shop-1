@@ -10,8 +10,8 @@ function Banner(): JSX.Element {
   return (
     <div className="banner">
       <picture>
-        <source type="image/webp" srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}/>
-        <img src={previewImg} srcSet={`${previewImg2x} 2x`} width="1280" height="280" alt={name}/>
+        <source type="image/webp" srcSet={`/${previewImgWebp}, /${previewImgWebp2x} 2x`}/>
+        <img src={`/${previewImg}`} srcSet={`/${previewImg2x} 2x`} width="1280" height="280" alt={name}/>
       </picture>
       <p className="banner__info">
         <span className="banner__message">Новинка!</span>

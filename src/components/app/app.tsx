@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Catalog from '../../pages/catalog/catalog';
 import Item from '../../pages/item/item';
@@ -10,7 +10,7 @@ function App(): JSX.Element {
     <Routes>
       <Route
         path={AppRoute.Root}
-        element={<Catalog />}
+        element={<Navigate to={AppRoute.CatalogStart} />}
       />
       <Route
         path={AppRoute.CatalogPage}
@@ -18,6 +18,10 @@ function App(): JSX.Element {
       />
       <Route
         path={AppRoute.ItemId}
+        element={<Item />}
+      />
+      <Route
+        path={AppRoute.ItemTab}
         element={<Item />}
       />
       <Route
