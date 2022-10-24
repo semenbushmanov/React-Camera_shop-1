@@ -12,20 +12,31 @@ import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { RequestStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { useFetchCamera } from '../../hooks/api-hooks/useFetchCamera';
+import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
+import { useFetchSimilarCameras } from '../../hooks/api-hooks/use-fetch-similar-cameras';
 import { getBasketItems } from '../../store/basket/selectors';
 import { formatPrice } from '../../utils/common';
+import { Camera } from '../../types/camera';
 
 function Item(): JSX.Element {
   const { id } = useParams();
   const [ camera, status ] = useFetchCamera(id);
+  const [ similarCameras ] = useFetchSimilarCameras(id);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
+  const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const basketItemsCount = useAppSelector(getBasketItems).length;
 
-  const toggleAddItemModal = useCallback(
+  const openAddItemModal = useCallback(
+    (cameraItem: Camera) => {
+      setCurrentCamera(cameraItem);
+      setAddItemModalOpen(true);
+    }, []
+  );
+
+  const closeAddItemModal = useCallback(
     () => {
-      setAddItemModalOpen(!isAddItemModalOpen);
-    }, [isAddItemModalOpen]
+      setAddItemModalOpen(false);
+    }, []
   );
 
   if (!id || status === RequestStatus.Error) {
@@ -71,7 +82,7 @@ function Item(): JSX.Element {
                   <h1 className="title title--h3">{name}</h1>
                   <RatingStars rating={rating} reviewCount={reviewCount}/>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{formatPrice(price)} ₽</p>
-                  <button className="btn btn--purple" type="button" onClick={toggleAddItemModal}>
+                  <button className="btn btn--purple" type="button" onClick={() => openAddItemModal(camera)}>
                     <svg width="24" height="16" aria-hidden="true">
                       <use xlinkHref="#icon-add-basket"></use>
                     </svg>Добавить в корзину
@@ -81,7 +92,7 @@ function Item(): JSX.Element {
               </div>
             </section>
           </div>
-          <SimilarProductSlider />
+          {similarCameras.length !== 0 && <SimilarProductSlider similarCameras={similarCameras} openAddItemModal={openAddItemModal}/>}
           <ReviewBlock />
         </div>
         <a className="up-btn" href="#header">
@@ -89,7 +100,7 @@ function Item(): JSX.Element {
             <use xlinkHref="#icon-arrow2"></use>
           </svg>
         </a>
-        {isAddItemModalOpen && <AddItemModal camera={camera} closeAddItemModal={toggleAddItemModal}/>}
+        {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
       </main>
       <Footer />
     </div>

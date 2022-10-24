@@ -19,7 +19,7 @@ function ProductCardsList({cameras, currentPage, openAddItemModal}: ProductCards
         (camera) => (
           <ProductCard
             key={camera.id}
-            camera= {camera}
+            camera={camera}
             isInBasket={false}
             openAddItemModal={openAddItemModal}
           />)

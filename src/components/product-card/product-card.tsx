@@ -9,9 +9,10 @@ type ProductCardProps = {
   camera: Camera;
   isInBasket: boolean;
   openAddItemModal: (camera: Camera) => void;
+  isActive?: boolean;
 };
 
-function ProductCard({camera, isInBasket, openAddItemModal}: ProductCardProps): JSX.Element {
+function ProductCard({camera, isInBasket, openAddItemModal, isActive}: ProductCardProps): JSX.Element {
   const { id, name, rating, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, reviewCount } = camera;
 
   const handleBuyButtonClick = () => {
@@ -19,7 +20,7 @@ function ProductCard({camera, isInBasket, openAddItemModal}: ProductCardProps): 
   };
 
   return (
-    <div className="product-card">
+    <div className={isActive ? 'product-card is-active' : 'product-card'}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`/${previewImgWebp}, /${previewImgWebp2x} 2x`}/>
