@@ -10,7 +10,8 @@ type SimilarProductSliderProps = {
 const SIMILAR_CARDS_NUMBER = 3;
 const SLIDER_STEP = 1;
 
-function SimilarProductSlider({similarCameras, openAddItemModal}: SimilarProductSliderProps): JSX.Element {
+function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
+  const { similarCameras, openAddItemModal } = props;
   const [ firstCameraToRender, setFirstCameraToRender ] = useState(0);
   const lastCameraToRender = firstCameraToRender + SIMILAR_CARDS_NUMBER;
   const similarCamerasToRender = similarCameras.slice(firstCameraToRender, lastCameraToRender);
@@ -41,13 +42,26 @@ function SimilarProductSlider({similarCameras, openAddItemModal}: SimilarProduct
                   />)
               )}
             </div>
-            {firstCameraToRender > 0 &&
-              <button className="slider-controls slider-controls--prev" type="button" aria-label="Предыдущий слайд" onClick={handleBackButton}>
-                <svg width="7" height="12" aria-hidden="true">
-                  <use xlinkHref="#icon-arrow"></use>
-                </svg>
-              </button>}
-            <button className="slider-controls slider-controls--next" type="button" aria-label="Следующий слайд" onClick={handleNextButton} disabled={firstCameraToRender >= similarCameras.length - SIMILAR_CARDS_NUMBER}>
+            <button
+              className="slider-controls slider-controls--prev"
+              type="button"
+              aria-label="Предыдущий слайд"
+              onClick={handleBackButton}
+              disabled={firstCameraToRender === 0}
+              style={{pointerEvents: 'auto'}}
+            >
+              <svg width="7" height="12" aria-hidden="true">
+                <use xlinkHref="#icon-arrow"></use>
+              </svg>
+            </button>
+            <button
+              className="slider-controls slider-controls--next"
+              type="button"
+              aria-label="Следующий слайд"
+              onClick={handleNextButton}
+              disabled={firstCameraToRender >= similarCameras.length - SIMILAR_CARDS_NUMBER}
+              style={{pointerEvents: 'auto'}}
+            >
               <svg width="7" height="12" aria-hidden="true">
                 <use xlinkHref="#icon-arrow"></use>
               </svg>
