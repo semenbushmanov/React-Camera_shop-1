@@ -28,6 +28,8 @@ export type Review = {
   cameraId: number;
 };
 
+export type Reviews = Review[];
+
 export type Promo = {
   id: number;
   name: string;

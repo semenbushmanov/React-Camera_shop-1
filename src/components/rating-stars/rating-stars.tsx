@@ -1,11 +1,12 @@
 type RatingStarsProps = {
   rating: number;
-  reviewCount: number;
+  reviewCount?: number;
+  reviewCard?: boolean;
 };
 
 const MAX_STARS_NUMBER = 5;
 
-function RatingStars({rating, reviewCount}: RatingStarsProps): JSX.Element {
+function RatingStars({rating, reviewCount, reviewCard}: RatingStarsProps): JSX.Element {
   const fullStars: JSX.Element[] = [];
   const stars: JSX.Element[] = [];
 
@@ -26,11 +27,16 @@ function RatingStars({rating, reviewCount}: RatingStarsProps): JSX.Element {
   }
 
   return (
-    <div className="rate product__rate">
+    <div className={reviewCard ? 'rate review-card__rate' : 'rate product__rate'}>
       {fullStars}
       {stars}
-      <p className="visually-hidden">Рейтинг: {rating}</p>
-      <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
+      {reviewCard ?
+        <p className="visually-hidden">Оценка: {rating}</p>
+        :
+        <>
+          <p className="visually-hidden">Рейтинг: {rating}</p>
+          <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
+        </>}
     </div>
   );
 }

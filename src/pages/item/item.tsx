@@ -14,6 +14,7 @@ import { RequestStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
 import { useFetchSimilarCameras } from '../../hooks/api-hooks/use-fetch-similar-cameras';
+import { useFetchReviews } from '../../hooks/api-hooks/use-fetch-reviews';
 import { getBasketItems } from '../../store/basket/selectors';
 import { formatPrice } from '../../utils/common';
 import { Camera } from '../../types/camera';
@@ -22,6 +23,7 @@ function Item(): JSX.Element {
   const { id } = useParams();
   const [ camera, status ] = useFetchCamera(id);
   const [ similarCameras ] = useFetchSimilarCameras(id);
+  const [ reviews ] = useFetchReviews(id);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const basketItemsCount = useAppSelector(getBasketItems).length;
@@ -93,7 +95,7 @@ function Item(): JSX.Element {
             </section>
           </div>
           {similarCameras.length !== 0 && <SimilarProductSlider similarCameras={similarCameras} openAddItemModal={openAddItemModal}/>}
-          <ReviewBlock />
+          <ReviewBlock reviews={reviews}/>
         </div>
         <a className="up-btn" href="#header">
           <svg width="12" height="18" aria-hidden="true">
