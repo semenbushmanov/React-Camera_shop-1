@@ -17,7 +17,7 @@ import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
 import { useFetchSimilarCameras } from '../../hooks/api-hooks/use-fetch-similar-cameras';
 import { useFetchReviews } from '../../hooks/api-hooks/use-fetch-reviews';
 import { getBasketItems } from '../../store/basket/selectors';
-import { formatPrice } from '../../utils/common';
+import { formatPrice, sortReviewsByDate } from '../../utils/common';
 import { Camera } from '../../types/camera';
 
 function Item(): JSX.Element {
@@ -28,6 +28,7 @@ function Item(): JSX.Element {
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const basketItemsCount = useAppSelector(getBasketItems).length;
+  const sortedReviews = reviews.sort(sortReviewsByDate);
 
   const openAddItemModal = useCallback(
     (cameraItem: Camera) => {
@@ -96,7 +97,7 @@ function Item(): JSX.Element {
             </section>
           </div>
           {similarCameras.length !== 0 && <SimilarProductSlider similarCameras={similarCameras} openAddItemModal={openAddItemModal}/>}
-          <ReviewBlock reviews={reviews}/>
+          <ReviewBlock reviews={sortedReviews}/>
         </div>
         <HashLink className="up-btn" smooth to="#">
           <svg width="12" height="18" aria-hidden="true">
