@@ -1,5 +1,6 @@
 import RatingStars from '../rating-stars/rating-stars';
 import { Review } from '../../types/camera';
+import { formatReviewDate } from '../../utils/common';
 
 type ReviewCardProps = {
   reviewData: Review;
@@ -12,7 +13,7 @@ function ReviewCard({reviewData}: ReviewCardProps): JSX.Element {
     <li className="review-card">
       <div className="review-card__head">
         <p className="title title--h4">{userName}</p>
-        <time className="review-card__data" dateTime={createAt}>{createAt}</time>
+        <time className="review-card__data" dateTime={createAt}>{formatReviewDate(createAt)}</time>
       </div>
       <RatingStars rating={rating} reviewCard/>
       <ul className="review-card__list">
