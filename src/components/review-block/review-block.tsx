@@ -1,11 +1,14 @@
 import ReviewCard from '../review-card/review-card';
 import { Reviews } from '../../types/camera';
+import { memo } from 'react';
 
 type ReviewBlockProps = {
   reviews: Reviews;
+  handleShowMoreButtonClick: () => void;
+  shouldRenderShowMoreButton: boolean;
 };
 
-function ReviewBlock({reviews}: ReviewBlockProps): JSX.Element {
+function ReviewBlock({reviews, handleShowMoreButtonClick, shouldRenderShowMoreButton}: ReviewBlockProps): JSX.Element {
   return (
     <div className="page-content__section">
       <section className="review-block">
@@ -17,14 +20,16 @@ function ReviewBlock({reviews}: ReviewBlockProps): JSX.Element {
           <ul className="review-block__list">
             {reviews.map((review) => <ReviewCard key={review.id} reviewData={review}/>)}
           </ul>
-          <div className="review-block__buttons">
-            <button className="btn btn--purple" type="button">Показать больше отзывов
-            </button>
-          </div>
+          {shouldRenderShowMoreButton &&
+            <div className="review-block__buttons">
+              <button className="btn btn--purple" type="button" onClick={handleShowMoreButtonClick}>
+                Показать больше отзывов
+              </button>
+            </div>}
         </div>
       </section>
     </div>
   );
 }
 
-export default ReviewBlock;
+export default memo(ReviewBlock);

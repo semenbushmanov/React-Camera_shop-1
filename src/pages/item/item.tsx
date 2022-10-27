@@ -20,6 +20,8 @@ import { getBasketItems } from '../../store/basket/selectors';
 import { formatPrice, sortReviewsByDate } from '../../utils/common';
 import { Camera } from '../../types/camera';
 
+const REVIEWS_RENDERING_STEP = 3;
+
 function Item(): JSX.Element {
   const { id } = useParams();
   const [ camera, status ] = useFetchCamera(id);
@@ -27,8 +29,10 @@ function Item(): JSX.Element {
   const [ reviews ] = useFetchReviews(id);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
+  const [ renderedReviewsCount, setRenderedReviewsCount ] = useState(REVIEWS_RENDERING_STEP);
   const basketItemsCount = useAppSelector(getBasketItems).length;
   const sortedReviews = reviews.sort(sortReviewsByDate);
+  const reviewsToRender = sortedReviews.slice(0, renderedReviewsCount);
 
   const openAddItemModal = useCallback(
     (cameraItem: Camera) => {
@@ -38,9 +42,12 @@ function Item(): JSX.Element {
   );
 
   const closeAddItemModal = useCallback(
-    () => {
-      setAddItemModalOpen(false);
-    }, []
+    () => setAddItemModalOpen(false), []
+  );
+
+  const handleShowMoreButtonClick = useCallback(
+    () => setRenderedReviewsCount(renderedReviewsCount + REVIEWS_RENDERING_STEP),
+    [renderedReviewsCount]
   );
 
   if (!id || status === RequestStatus.Error) {
@@ -97,7 +104,11 @@ function Item(): JSX.Element {
             </section>
           </div>
           {similarCameras.length !== 0 && <SimilarProductSlider similarCameras={similarCameras} openAddItemModal={openAddItemModal}/>}
-          <ReviewBlock reviews={sortedReviews}/>
+          <ReviewBlock
+            reviews={reviewsToRender}
+            handleShowMoreButtonClick={handleShowMoreButtonClick}
+            shouldRenderShowMoreButton={sortedReviews.length > renderedReviewsCount}
+          />
         </div>
         <HashLink className="up-btn" smooth to="#">
           <svg width="12" height="18" aria-hidden="true">
