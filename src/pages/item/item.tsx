@@ -10,6 +10,7 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import Tabs from '../../components/tabs/tabs';
 import { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 import { RequestStatus } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
@@ -97,11 +98,11 @@ function Item(): JSX.Element {
           {similarCameras.length !== 0 && <SimilarProductSlider similarCameras={similarCameras} openAddItemModal={openAddItemModal}/>}
           <ReviewBlock reviews={reviews}/>
         </div>
-        <a className="up-btn" href="#header">
+        <HashLink className="up-btn" smooth to="#">
           <svg width="12" height="18" aria-hidden="true">
             <use xlinkHref="#icon-arrow2"></use>
           </svg>
-        </a>
+        </HashLink>
         {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
       </main>
       <Footer />
