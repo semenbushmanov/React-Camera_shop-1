@@ -5,6 +5,7 @@ export type CamerasData = {
   cameras: Cameras;
   isDataLoading: boolean;
   promo: Promo;
+  isPosting: boolean;
 };
 
 export type BasketData = {

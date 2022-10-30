@@ -6,16 +6,19 @@ type ReviewBlockProps = {
   reviews: Reviews;
   handleShowMoreButtonClick: () => void;
   shouldRenderShowMoreButton: boolean;
+  openAddReviewModal: () => void;
 };
 
-function ReviewBlock({reviews, handleShowMoreButtonClick, shouldRenderShowMoreButton}: ReviewBlockProps): JSX.Element {
+function ReviewBlock(props: ReviewBlockProps): JSX.Element {
+  const { reviews, handleShowMoreButtonClick, shouldRenderShowMoreButton, openAddReviewModal } = props;
+
   return (
     <div className="page-content__section">
       <section className="review-block">
         <div className="container">
           <div className="page-content__headed">
             <h2 className="title title--h3">Отзывы</h2>
-            <button className="btn" type="button">Оставить свой отзыв</button>
+            <button className="btn" type="button" onClick={openAddReviewModal}>Оставить свой отзыв</button>
           </div>
           <ul className="review-block__list">
             {reviews.map((review) => <ReviewCard key={review.id} reviewData={review}/>)}

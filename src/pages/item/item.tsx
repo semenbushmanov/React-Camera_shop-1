@@ -5,6 +5,7 @@ import ReviewBlock from '../../components/review-block/review-block';
 import RatingStars from '../../components/rating-stars/rating-stars';
 import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import AddItemModal from '../../components/add-item-modal/add-item-modal';
+import AddReviewModal from '../../components/add-review-modal/add-review-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Tabs from '../../components/tabs/tabs';
@@ -28,6 +29,7 @@ function Item(): JSX.Element {
   const [ similarCameras ] = useFetchSimilarCameras(id);
   const [ reviews ] = useFetchReviews(id);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
+  const [isAddReviewModalOpen, setAddReviewModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const [ renderedReviewsCount, setRenderedReviewsCount ] = useState(REVIEWS_RENDERING_STEP);
   const basketItemsCount = useAppSelector(getBasketItems).length;
@@ -45,6 +47,14 @@ function Item(): JSX.Element {
     () => setAddItemModalOpen(false), []
   );
 
+  const openAddReviewModal = useCallback(
+    () => setAddReviewModalOpen(true), []
+  );
+
+  const closeAddReviewModal = useCallback(
+    () => setAddReviewModalOpen(false), []
+  );
+
   const handleShowMoreButtonClick = useCallback(
     () => setRenderedReviewsCount(renderedReviewsCount + REVIEWS_RENDERING_STEP),
     [renderedReviewsCount]
@@ -58,21 +68,8 @@ function Item(): JSX.Element {
     return <LoadingScreen />;
   }
 
-  const {
-    name,
-    vendorCode,
-    type,
-    category,
-    description,
-    level,
-    rating,
-    price,
-    previewImg,
-    previewImg2x,
-    previewImgWebp,
-    previewImgWebp2x,
-    reviewCount
-  } = camera;
+  const { name, vendorCode, type, category, description, level, rating, price,
+    previewImg, previewImg2x, previewImgWebp, previewImgWebp2x, reviewCount } = camera;
 
   return (
     <div className="wrapper">
@@ -108,6 +105,7 @@ function Item(): JSX.Element {
             reviews={reviewsToRender}
             handleShowMoreButtonClick={handleShowMoreButtonClick}
             shouldRenderShowMoreButton={sortedReviews.length > renderedReviewsCount}
+            openAddReviewModal={openAddReviewModal}
           />
         </div>
         <HashLink className="up-btn" smooth to="#">
@@ -115,7 +113,10 @@ function Item(): JSX.Element {
             <use xlinkHref="#icon-arrow2"></use>
           </svg>
         </HashLink>
-        {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
+        {isAddItemModalOpen &&
+          <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
+        {isAddReviewModalOpen &&
+          <AddReviewModal cameraId={camera.id} closeAddReviewModal={closeAddReviewModal}/>}
       </main>
       <Footer />
     </div>

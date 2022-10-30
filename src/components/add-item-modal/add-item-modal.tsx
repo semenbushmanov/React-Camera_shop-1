@@ -14,7 +14,8 @@ function AddItemModal({closeAddItemModal, camera}: AddItemModalProps): JSX.Eleme
   const [isAddButtonFocused, setAddButtonFocused] = useState(false);
   const addItemButton = useRef<HTMLButtonElement | null>(null);
   const closeButton = useRef<HTMLButtonElement | null>(null);
-  const {id, name, vendorCode, type, level, price, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x} = camera;
+  const {id, name, vendorCode, type, level, price, previewImg, previewImg2x,
+    previewImgWebp, previewImgWebp2x} = camera;
 
   const handleAddItemButton = () => {
     dispatch(addItem(id));
