@@ -53,32 +53,26 @@ function AddReviewModal({cameraId, closeAddReviewModal}: AddReviewModalProps): J
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if (rating === 0) {
-      setRatingInvalid(true);
+    if (rating === 0 || !name || !advantage || !disadvantage || comment.length < MIN_COMMENT_LENGTH) {
+      if (rating === 0) {
+        setRatingInvalid(true);
+      }
 
-      return;
-    }
+      if (!name) {
+        setNameInvalid(true);
+      }
 
-    if (!name) {
-      setNameInvalid(true);
+      if (!advantage) {
+        setAdvantageInvalid(true);
+      }
 
-      return;
-    }
+      if (!disadvantage) {
+        setDisadvantageInvalid(true);
+      }
 
-    if (!advantage) {
-      setAdvantageInvalid(true);
-
-      return;
-    }
-
-    if (!disadvantage) {
-      setDisadvantageInvalid(true);
-
-      return;
-    }
-
-    if (comment.length < MIN_COMMENT_LENGTH) {
-      setCommentInvalid(true);
+      if (comment.length < MIN_COMMENT_LENGTH) {
+        setCommentInvalid(true);
+      }
 
       return;
     }
