@@ -1,6 +1,13 @@
 function LoadingScreen(): JSX.Element {
   return (
-    <p>Loading ...</p>
+    <div className="modal is-active">
+      <div className="modal__wrapper">
+        <div className="modal__overlay"></div>
+        <div className="modal__content">
+          <h2>Loading...</h2>
+        </div>
+      </div>
+    </div>
   );
 }
 

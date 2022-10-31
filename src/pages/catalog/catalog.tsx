@@ -7,16 +7,18 @@ import PaginationList from '../../components/pagination-list/pagination-list';
 import ProductCardsList from '../../components/product-cards-list/product-cards-list';
 import AddItemModal from '../../components/add-item-modal/add-item-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import LoadingScreen from '../loading-screen/loading-screen';
 import { useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppSelector } from '../../hooks';
-import { getCameras } from '../../store/cameras-data/selectors';
+import { getCameras, getDataLoadingStatus } from '../../store/cameras-data/selectors';
 import { Camera } from '../../types/camera';
 
 function Catalog(): JSX.Element {
   const { page } = useParams();
   const cameras = useAppSelector(getCameras);
+  const isLoading = useAppSelector(getDataLoadingStatus);
   const pagesTotal = Math.ceil(cameras.length / 9);
   const currentPage = page ? Number(page) : 1;
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
@@ -34,6 +36,10 @@ function Catalog(): JSX.Element {
       setAddItemModalOpen(false);
     }, []
   );
+
+  if (isLoading) {
+    return (<LoadingScreen />);
+  }
 
   if (pagesTotal) {
     if (currentPage > pagesTotal || currentPage < 1 || isNaN(currentPage)) {

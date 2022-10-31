@@ -18,6 +18,7 @@ import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
 import { useFetchSimilarCameras } from '../../hooks/api-hooks/use-fetch-similar-cameras';
 import { useFetchReviews } from '../../hooks/api-hooks/use-fetch-reviews';
 import { getBasketItems } from '../../store/basket/selectors';
+import { getPostingStatus } from '../../store/cameras-data/selectors';
 import { formatPrice, sortReviewsByDate } from '../../utils/common';
 import { Camera } from '../../types/camera';
 
@@ -32,6 +33,7 @@ function Item(): JSX.Element {
   const [isAddReviewModalOpen, setAddReviewModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const [ renderedReviewsCount, setRenderedReviewsCount ] = useState(REVIEWS_RENDERING_STEP);
+  const isPosting = useAppSelector(getPostingStatus);
   const basketItemsCount = useAppSelector(getBasketItems).length;
   const sortedReviews = reviews.sort(sortReviewsByDate);
   const reviewsToRender = sortedReviews.slice(0, renderedReviewsCount);
@@ -64,7 +66,7 @@ function Item(): JSX.Element {
     return <NotFoundScreen />;
   }
 
-  if (!camera || status === RequestStatus.Loading) {
+  if (!camera || status === RequestStatus.Loading || isPosting) {
     return <LoadingScreen />;
   }
 
