@@ -87,7 +87,6 @@ function AddReviewModal({cameraId, closeAddReviewModal}: AddReviewModalProps): J
     };
 
     dispatch(postReviewAction({review: reviewPost}));
-    closeAddReviewModal();
   };
 
   useEffect(() => {

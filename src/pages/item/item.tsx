@@ -6,10 +6,11 @@ import RatingStars from '../../components/rating-stars/rating-stars';
 import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import AddItemModal from '../../components/add-item-modal/add-item-modal';
 import AddReviewModal from '../../components/add-review-modal/add-review-modal';
+import ReviewSuccessModal from '../../components/review-success-modal/review-success-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Tabs from '../../components/tabs/tabs';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import { RequestStatus } from '../../const';
@@ -18,7 +19,7 @@ import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
 import { useFetchSimilarCameras } from '../../hooks/api-hooks/use-fetch-similar-cameras';
 import { useFetchReviews } from '../../hooks/api-hooks/use-fetch-reviews';
 import { getBasketItems } from '../../store/basket/selectors';
-import { getPostingStatus } from '../../store/cameras-data/selectors';
+import { getPostingStatus, getReviewSuccessStatus } from '../../store/cameras-data/selectors';
 import { formatPrice, sortReviewsByDate } from '../../utils/common';
 import { Camera } from '../../types/camera';
 
@@ -34,9 +35,16 @@ function Item(): JSX.Element {
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const [ renderedReviewsCount, setRenderedReviewsCount ] = useState(REVIEWS_RENDERING_STEP);
   const isPosting = useAppSelector(getPostingStatus);
+  const reviewSuccessStatus = useAppSelector(getReviewSuccessStatus);
   const basketItemsCount = useAppSelector(getBasketItems).length;
   const sortedReviews = reviews.sort(sortReviewsByDate);
   const reviewsToRender = sortedReviews.slice(0, renderedReviewsCount);
+
+  useEffect(() => {
+    if (reviewSuccessStatus === true) {
+      setAddReviewModalOpen(false);
+    }
+  }, [reviewSuccessStatus]);
 
   const openAddItemModal = useCallback(
     (cameraItem: Camera) => {
@@ -91,7 +99,9 @@ function Item(): JSX.Element {
                 <div className="product__content">
                   <h1 className="title title--h3">{name}</h1>
                   <RatingStars rating={rating} reviewCount={reviewCount}/>
-                  <p className="product__price"><span className="visually-hidden">Цена:</span>{formatPrice(price)} ₽</p>
+                  <p className="product__price">
+                    <span className="visually-hidden">Цена:</span>{formatPrice(price)} ₽
+                  </p>
                   <button className="btn btn--purple" type="button" onClick={() => openAddItemModal(camera)}>
                     <svg width="24" height="16" aria-hidden="true">
                       <use xlinkHref="#icon-add-basket"></use>
@@ -102,7 +112,8 @@ function Item(): JSX.Element {
               </div>
             </section>
           </div>
-          {similarCameras.length !== 0 && <SimilarProductSlider similarCameras={similarCameras} openAddItemModal={openAddItemModal}/>}
+          {similarCameras.length !== 0 &&
+            <SimilarProductSlider similarCameras={similarCameras} openAddItemModal={openAddItemModal}/>}
           <ReviewBlock
             reviews={reviewsToRender}
             handleShowMoreButtonClick={handleShowMoreButtonClick}
@@ -119,6 +130,7 @@ function Item(): JSX.Element {
           <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
         {isAddReviewModalOpen &&
           <AddReviewModal cameraId={camera.id} closeAddReviewModal={closeAddReviewModal}/>}
+        {reviewSuccessStatus && <ReviewSuccessModal />}
       </main>
       <Footer />
     </div>

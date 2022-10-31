@@ -3,12 +3,14 @@ import { NameSpace } from '../../const';
 import { Promo } from '../../types/camera';
 import { CamerasData } from '../../types/state';
 import { fetchCamerasAction, fetchPromoAction, postReviewAction } from '../api-actions';
+import { resetReviewSuccess } from '../action';
 
 const initialState: CamerasData = {
   cameras: [],
   isDataLoading:false,
   promo: {} as Promo,
   isPosting: false,
+  reviewSuccess: false,
 };
 
 export const camerasData = createSlice({
@@ -34,9 +36,13 @@ export const camerasData = createSlice({
         state.isPosting = true;
       }).addCase(postReviewAction.fulfilled, (state) => {
         state.isPosting = false;
+        state.reviewSuccess = true;
       })
       .addCase(postReviewAction.rejected, (state) => {
         state.isPosting = false;
+      })
+      .addCase(resetReviewSuccess, (state) => {
+        state.reviewSuccess = false;
       });
   }
 });

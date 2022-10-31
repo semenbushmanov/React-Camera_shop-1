@@ -4,7 +4,7 @@ function LoadingScreen(): JSX.Element {
       <div className="modal__wrapper">
         <div className="modal__overlay"></div>
         <div className="modal__content">
-          <h2>Loading...</h2>
+          <h2>Загрузка...</h2>
         </div>
       </div>
     </div>
