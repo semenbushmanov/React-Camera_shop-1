@@ -41,7 +41,7 @@ function Item(): JSX.Element {
   const reviewsToRender = sortedReviews.slice(0, renderedReviewsCount);
 
   useEffect(() => {
-    if (reviewSuccessStatus === true) {
+    if (reviewSuccessStatus) {
       setAddReviewModalOpen(false);
     }
   }, [reviewSuccessStatus]);

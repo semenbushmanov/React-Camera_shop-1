@@ -53,12 +53,14 @@ function ReviewSuccessModal(): JSX.Element {
           </svg>
           <div className="modal__buttons">
             <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button"
-              onClick={handleClick}
+              onClick={handleClick} ref={backButton}
             >
               Вернуться к покупкам
             </button>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handleClick}>
+          <button className="cross-btn" type="button" aria-label="Закрыть попап"
+            onClick={handleClick} ref={closeButton}
+          >
             <svg width="10" height="10" aria-hidden="true">
               <use xlinkHref="#icon-close"></use>
             </svg>
