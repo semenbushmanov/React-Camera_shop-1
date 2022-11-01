@@ -27,16 +27,16 @@ const REVIEWS_RENDERING_STEP = 3;
 
 function Item(): JSX.Element {
   const { id } = useParams();
+  const isPosting = useAppSelector(getPostingStatus);
+  const reviewSuccessStatus = useAppSelector(getReviewSuccessStatus);
+  const basketItemsCount = useAppSelector(getBasketItems).length;
   const [ camera, status ] = useFetchCamera(id);
   const [ similarCameras ] = useFetchSimilarCameras(id);
-  const [ reviews ] = useFetchReviews(id);
+  const [ reviews ] = useFetchReviews(id, reviewSuccessStatus);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [isAddReviewModalOpen, setAddReviewModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const [ renderedReviewsCount, setRenderedReviewsCount ] = useState(REVIEWS_RENDERING_STEP);
-  const isPosting = useAppSelector(getPostingStatus);
-  const reviewSuccessStatus = useAppSelector(getReviewSuccessStatus);
-  const basketItemsCount = useAppSelector(getBasketItems).length;
   const sortedReviews = reviews.sort(sortReviewsByDate);
   const reviewsToRender = sortedReviews.slice(0, renderedReviewsCount);
 
