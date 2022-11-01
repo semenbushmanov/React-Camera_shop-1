@@ -10,7 +10,7 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, Settings } from '../../const';
 import { useAppSelector } from '../../hooks';
 import { getCameras, getDataLoadingStatus } from '../../store/cameras-data/selectors';
 import { Camera } from '../../types/camera';
@@ -19,8 +19,8 @@ function Catalog(): JSX.Element {
   const { page } = useParams();
   const cameras = useAppSelector(getCameras);
   const isLoading = useAppSelector(getDataLoadingStatus);
-  const pagesTotal = Math.ceil(cameras.length / 9);
-  const currentPage = page ? Number(page) : 1;
+  const pagesTotal = Math.ceil(cameras.length / Settings.CardsOnPageNumber);
+  const currentPage = page ? Number(page) : Settings.InitialPageNumber;
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
 
@@ -42,7 +42,7 @@ function Catalog(): JSX.Element {
   }
 
   if (pagesTotal) {
-    if (currentPage > pagesTotal || currentPage < 1 || isNaN(currentPage)) {
+    if (currentPage > pagesTotal || currentPage < Settings.InitialPageNumber || isNaN(currentPage)) {
       return (
         <NotFoundScreen />
       );

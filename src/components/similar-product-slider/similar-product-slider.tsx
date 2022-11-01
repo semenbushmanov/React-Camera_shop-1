@@ -1,27 +1,25 @@
 import ProductCard from '../product-card/product-card';
 import { Camera, Cameras } from '../../types/camera';
 import { useState, memo } from 'react';
+import { Settings } from '../../const';
 
 type SimilarProductSliderProps = {
   similarCameras: Cameras;
   openAddItemModal: (camera: Camera) => void;
 };
 
-const SIMILAR_CARDS_NUMBER = 3;
-const SLIDER_STEP = 1;
-
 function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
   const { similarCameras, openAddItemModal } = props;
   const [ firstCameraToRender, setFirstCameraToRender ] = useState(0);
-  const lastCameraToRender = firstCameraToRender + SIMILAR_CARDS_NUMBER;
+  const lastCameraToRender = firstCameraToRender + Settings.SimilarCardsNumber;
   const similarCamerasToRender = similarCameras.slice(firstCameraToRender, lastCameraToRender);
 
   const handleNextButton = () => {
-    setFirstCameraToRender(firstCameraToRender + SLIDER_STEP);
+    setFirstCameraToRender(firstCameraToRender + Settings.SliderStep);
   };
 
   const handleBackButton = () => {
-    setFirstCameraToRender(firstCameraToRender - SLIDER_STEP);
+    setFirstCameraToRender(firstCameraToRender - Settings.SliderStep);
   };
 
   return (
@@ -59,7 +57,7 @@ function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
               type="button"
               aria-label="Следующий слайд"
               onClick={handleNextButton}
-              disabled={firstCameraToRender >= similarCameras.length - SIMILAR_CARDS_NUMBER}
+              disabled={firstCameraToRender >= similarCameras.length - Settings.SimilarCardsNumber}
               style={{pointerEvents: 'auto'}}
             >
               <svg width="7" height="12" aria-hidden="true">

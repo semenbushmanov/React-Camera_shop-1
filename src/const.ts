@@ -33,3 +33,11 @@ export enum Tab {
   Description = 'description',
   Specs = 'specs',
 }
+
+export enum Settings {
+  CardsOnPageNumber = 9,
+  PaginationStep = 1,
+  InitialPageNumber = 1,
+  SimilarCardsNumber = 3,
+  SliderStep = 1,
+}

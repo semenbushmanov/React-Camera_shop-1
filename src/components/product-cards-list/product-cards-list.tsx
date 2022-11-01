@@ -1,4 +1,5 @@
 import ProductCard from '../product-card/product-card';
+import { Settings } from '../../const';
 import { Camera, Cameras } from '../../types/camera';
 import { memo } from 'react';
 
@@ -8,9 +9,11 @@ type ProductCardsListProps = {
   openAddItemModal: (camera: Camera) => void;
 };
 
+const PAGE_TO_INDEX_DIFFERENCE = 1;
+
 function ProductCardsList({cameras, currentPage, openAddItemModal}: ProductCardsListProps): JSX.Element {
-  const startingPoint = (currentPage - 1) * 9;
-  const finalPoint = startingPoint + 9;
+  const startingPoint = (currentPage - PAGE_TO_INDEX_DIFFERENCE) * Settings.CardsOnPageNumber;
+  const finalPoint = startingPoint + Settings.CardsOnPageNumber;
   const camerasToRender = cameras.slice(startingPoint, finalPoint);
 
   return (
