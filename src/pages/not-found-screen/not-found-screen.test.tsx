@@ -20,7 +20,7 @@ describe('Component: NotFoundScreen', () => {
     expect(screen.getByRole('link')).toBeInTheDocument();
   });
 
-  it('should redirect to root url when user clicked to link', async () => {
+  it('should redirect to root url when user clicks the link', async () => {
     history.push('/fake');
 
     render(
