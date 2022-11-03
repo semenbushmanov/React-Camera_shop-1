@@ -1,5 +1,5 @@
-import { system, datatype, commerce, finance } from 'faker';
-import { Camera } from '../types/camera';
+import { system, datatype, commerce, finance, name, lorem } from 'faker';
+import { Camera, ReviewPost, Promo } from '../types/camera';
 
 export const makeFakeCamera = (): Camera => ({
   id: datatype.number(),
@@ -26,3 +26,24 @@ export const makeFakeCamera = (): Camera => ({
     max: 5,
   }),
 } as Camera);
+
+export const makeFakePromo = (): Promo => ({
+  id: datatype.number(),
+  name: commerce.productName(),
+  previewImg: system.filePath(),
+  previewImg2x: system.filePath(),
+  previewImgWebp: system.filePath(),
+  previewImgWebp2x: system.filePath(),
+} as Promo);
+
+export const makeFakeReviewPost = (): ReviewPost => ({
+  cameraId: datatype.number(),
+  userName: name.firstName(),
+  advantage: lorem.sentence(),
+  disadvantage: lorem.sentence(),
+  review: lorem.sentence(),
+  rating: datatype.number({
+    min: 1,
+    max: 5,
+  }),
+} as ReviewPost);
