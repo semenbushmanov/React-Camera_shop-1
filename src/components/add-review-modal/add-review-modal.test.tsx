@@ -18,7 +18,7 @@ const store = mockStore({
 });
 
 
-describe.only('Component: AddReviewModal', () => {
+describe('Component: AddReviewModal', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
