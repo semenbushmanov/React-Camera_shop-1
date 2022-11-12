@@ -10,7 +10,7 @@ import { formatPrice } from '../../utils/common';
 import MockAdapter from 'axios-mock-adapter';
 import HistoryRouter from '../../components/history-route/history-route';
 import * as ReactRouterDom from 'react-router-dom';
-import Item from './item';
+import ItemScreen from './item-screen';
 
 interface mockedReactRouterDomType extends Omit<typeof ReactRouterDom, 'useParams'> {
   useParams: () => {
@@ -62,7 +62,7 @@ describe('Component: Item', () => {
     render(
       <HistoryRouter history={history}>
         <Provider store={store}>
-          <Item />
+          <ItemScreen />
         </Provider>
       </HistoryRouter>
     );

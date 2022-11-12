@@ -15,7 +15,7 @@ import { useAppSelector } from '../../hooks';
 import { getCameras, getDataLoadingStatus } from '../../store/cameras-data/selectors';
 import { Camera } from '../../types/camera';
 
-function Catalog(): JSX.Element {
+function CatalogScreen(): JSX.Element {
   const { page } = useParams();
   const cameras = useAppSelector(getCameras);
   const isLoading = useAppSelector(getDataLoadingStatus);
@@ -96,4 +96,4 @@ function Catalog(): JSX.Element {
   );
 }
 
-export default Catalog;
+export default CatalogScreen;

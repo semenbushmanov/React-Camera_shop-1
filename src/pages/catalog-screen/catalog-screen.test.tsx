@@ -4,7 +4,7 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { makeFakeCamera, makeFakePromo } from '../../utils/mocks';
 import { createMemoryHistory } from 'history';
 import HistoryRouter from '../../components/history-route/history-route';
-import Catalog from './catalog';
+import CatalogScreen from './catalog-screen';
 
 const mockStore = configureMockStore();
 const mockCameras = [ makeFakeCamera(), makeFakeCamera() ];
@@ -27,7 +27,7 @@ describe('Component: Catalog', () => {
     render(
       <HistoryRouter history={history}>
         <Provider store={store}>
-          <Catalog />
+          <CatalogScreen />
         </Provider>
       </HistoryRouter>
     );

@@ -25,7 +25,7 @@ import { Camera } from '../../types/camera';
 
 const REVIEWS_RENDERING_STEP = 3;
 
-function Item(): JSX.Element {
+function ItemScreen(): JSX.Element {
   const { id } = useParams();
   const isPosting = useAppSelector(getPostingStatus);
   const reviewSuccessStatus = useAppSelector(getReviewSuccessStatus);
@@ -137,4 +137,4 @@ function Item(): JSX.Element {
   );
 }
 
-export default Item;
+export default ItemScreen;

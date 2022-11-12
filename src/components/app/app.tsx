@@ -1,8 +1,8 @@
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import Catalog from '../../pages/catalog/catalog';
-import Item from '../../pages/item/item';
-import Basket from '../../pages/basket/basket';
+import CatalogScreen from '../../pages/catalog-screen/catalog-screen';
+import ItemScreen from '../../pages/item-screen/item-screen';
+import BasketScreen from '../../pages/basket-screen/basket-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 
 function App(): JSX.Element {
@@ -14,19 +14,19 @@ function App(): JSX.Element {
       />
       <Route
         path={AppRoute.CatalogPage}
-        element={<Catalog />}
+        element={<CatalogScreen />}
       />
       <Route
         path={AppRoute.ItemId}
-        element={<Item />}
+        element={<ItemScreen />}
       />
       <Route
         path={AppRoute.ItemTab}
-        element={<Item />}
+        element={<ItemScreen />}
       />
       <Route
         path={AppRoute.Basket}
-        element={<Basket />}
+        element={<BasketScreen />}
       />
       <Route
         path="*"

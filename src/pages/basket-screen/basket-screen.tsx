@@ -3,7 +3,7 @@ import Header from '../../components/header/header';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
-function Basket(): JSX.Element {
+function BasketScreen(): JSX.Element {
   return (
     <div className="wrapper">
       <Header basketItemsCount={3}/>
@@ -146,4 +146,4 @@ function Basket(): JSX.Element {
   );
 }
 
-export default Basket;
+export default BasketScreen;
