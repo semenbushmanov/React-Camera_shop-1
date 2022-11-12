@@ -130,7 +130,7 @@ function ItemScreen(): JSX.Element {
           <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
         {isAddReviewModalOpen &&
           <AddReviewModal cameraId={camera.id} closeAddReviewModal={closeAddReviewModal}/>}
-        {reviewSuccessStatus && <ReviewSuccessModal />}
+        {reviewSuccessStatus && !isAddReviewModalOpen && <ReviewSuccessModal />}
       </main>
       <Footer />
     </div>
