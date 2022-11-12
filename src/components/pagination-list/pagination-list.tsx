@@ -27,7 +27,7 @@ function PaginationList({pagesTotal, currentPage}: PaginationListProps): JSX.Ele
                 : 'pagination__link'}
               to={`${AppRoute.Catalog}/${pageIndex + INDEX_TO_PAGE_DIFFERENCE}`}
             >
-              {pageIndex + 1}
+              {pageIndex + INDEX_TO_PAGE_DIFFERENCE}
             </Link>
           </li>
         ))}

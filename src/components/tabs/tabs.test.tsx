@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Routes, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { AppRoute, Tab } from '../../const';
+import { AppRoute } from '../../const';
 import HistoryRouter from '../../components/history-route/history-route';
 import Tabs from './tabs';
 
@@ -9,15 +9,15 @@ const history = createMemoryHistory();
 
 describe('Component: Tabs', () => {
   it('should render correctly', () => {
-    history.push(`${AppRoute.Item}/1/${Tab.Description}`);
+    history.push(`${AppRoute.Item}/1`);
 
     render(
       <HistoryRouter history={history}>
         <Routes>
           <Route
-            path={`${AppRoute.Item}/1/${Tab.Description}`}
+            path={`${AppRoute.Item}/1/`}
             element={
-              <Tabs id='1' vendorCode='fakeCode' category='fakeCategory' type='fakeType'
+              <Tabs vendorCode='fakeCode' category='fakeCategory' type='fakeType'
                 level='fakeLevel' description='fakeDescription'
               />
             }

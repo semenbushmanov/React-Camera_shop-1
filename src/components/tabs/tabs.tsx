@@ -1,9 +1,7 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { AppRoute, Tab } from '../../const';
+import { useSearchParams } from 'react-router-dom';
+import { Tab } from '../../const';
 
 type TabsProps = {
-  id: string;
   vendorCode: string;
   category: string;
   type: string;
@@ -12,30 +10,22 @@ type TabsProps = {
 };
 
 function Tabs(props: TabsProps): JSX.Element {
-  const navigate = useNavigate();
-  const { tab } = useParams();
-  const { id, vendorCode, category, type, level, description } = props;
-
-  useEffect(() => {
-    if (tab !== Tab.Description) {
-      if (tab !== Tab.Specs) {
-        navigate(`${AppRoute.Item}/${id}/${Tab.Description}`);
-      }
-    }
-  }, [id, navigate, tab]);
+  const [ searchParams, setSearchParams ] = useSearchParams({ tab: Tab.Description });
+  const tab = searchParams.get('tab');
+  const { vendorCode, category, type, level, description } = props;
 
   return (
     <div className="tabs product__tabs">
       <div className="tabs__controls product__tabs-controls">
         <button
           className={tab === Tab.Specs ? 'tabs__control is-active' : 'tabs__control'}
-          onClick={() => navigate(`${AppRoute.Item}/${id}/${Tab.Specs}`)}
+          onClick={() => setSearchParams({ tab: Tab.Specs })}
           type="button"
         >Характеристики
         </button>
         <button
           className={tab === Tab.Description ? 'tabs__control is-active' : 'tabs__control'}
-          onClick={() => navigate(`${AppRoute.Item}/${id}/${Tab.Description}`)}
+          onClick={() => setSearchParams({ tab: Tab.Description })}
           type="button"
         >Описание
         </button>

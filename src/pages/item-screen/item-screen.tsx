@@ -107,7 +107,7 @@ function ItemScreen(): JSX.Element {
                       <use xlinkHref="#icon-add-basket"></use>
                     </svg>Добавить в корзину
                   </button>
-                  <Tabs id={id} vendorCode={vendorCode} category={category} type={type} level={level} description={description}/>
+                  <Tabs vendorCode={vendorCode} category={category} type={type} level={level} description={description}/>
                 </div>
               </div>
             </section>
