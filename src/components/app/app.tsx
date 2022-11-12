@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import CatalogScreen from '../../pages/catalog-screen/catalog-screen';
 import ItemScreen from '../../pages/item-screen/item-screen';
@@ -10,7 +10,7 @@ function App(): JSX.Element {
     <Routes>
       <Route
         path={AppRoute.Root}
-        element={<Navigate to={AppRoute.CatalogStart} />}
+        element={<CatalogScreen />}
       />
       <Route
         path={AppRoute.CatalogPage}
@@ -18,10 +18,6 @@ function App(): JSX.Element {
       />
       <Route
         path={AppRoute.ItemId}
-        element={<ItemScreen />}
-      />
-      <Route
-        path={AppRoute.ItemTab}
         element={<ItemScreen />}
       />
       <Route

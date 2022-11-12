@@ -44,7 +44,7 @@ describe('Application Routing', () => {
   });
 
   it('should render "Catalog" when user navigates to "/catalog/1"', () => {
-    history.push(AppRoute.CatalogStart);
+    history.push(`${AppRoute.Catalog}/1`);
 
     render(fakeApp);
 
