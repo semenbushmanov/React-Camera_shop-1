@@ -13,6 +13,8 @@ function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
   const [ firstCameraToRender, setFirstCameraToRender ] = useState(0);
   const lastCameraToRender = firstCameraToRender + Settings.SimilarCardsNumber;
   const similarCamerasToRender = similarCameras.slice(firstCameraToRender, lastCameraToRender);
+  const isBackButtonDisabled = firstCameraToRender === 0;
+  const isNextButtonDisabled = firstCameraToRender >= similarCameras.length - Settings.SimilarCardsNumber;
 
   const handleNextButton = () => {
     setFirstCameraToRender(firstCameraToRender + Settings.SliderStep);
@@ -45,8 +47,8 @@ function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
               type="button"
               aria-label="Предыдущий слайд"
               onClick={handleBackButton}
-              disabled={firstCameraToRender === 0}
-              style={{pointerEvents: 'auto'}}
+              disabled={isBackButtonDisabled}
+              style={isBackButtonDisabled ? {pointerEvents: 'none'} : {pointerEvents: 'auto'}}
             >
               <svg width="7" height="12" aria-hidden="true">
                 <use xlinkHref="#icon-arrow"></use>
@@ -57,8 +59,8 @@ function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
               type="button"
               aria-label="Следующий слайд"
               onClick={handleNextButton}
-              disabled={firstCameraToRender >= similarCameras.length - Settings.SimilarCardsNumber}
-              style={{pointerEvents: 'auto'}}
+              disabled={isNextButtonDisabled}
+              style={isNextButtonDisabled ? {pointerEvents: 'none'} : {pointerEvents: 'auto'}}
             >
               <svg width="7" height="12" aria-hidden="true">
                 <use xlinkHref="#icon-arrow"></use>
