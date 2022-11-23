@@ -1,12 +1,39 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useState, ChangeEvent, useEffect } from 'react';
+import { useFetchCameraSearch } from '../../hooks/api-hooks/use-fetch-camera-search';
+import FormSearchList from '../form-search-list/form-search-list';
 
 type HeaderProps = {
   basketItemsCount?: number;
 };
 
 function Header({basketItemsCount}: HeaderProps): JSX.Element {
+  const navigate = useNavigate();
   const isBasketCountVisible = basketItemsCount ? basketItemsCount !== 0 : false;
+  const [ isSearchListOpen, setSearchListOpen ] = useState(false);
+  const [ searchInput, setSearchInput ] = useState('');
+  const [ cameras ] = useFetchCameraSearch(searchInput);
+
+  useEffect(() => {
+    if (!searchInput) {
+      setSearchListOpen(false);
+    }
+  }, [searchInput]);
+
+  const handleSearchChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(target.value);
+    setSearchListOpen(true);
+  };
+
+  const resetSearch = () => {
+    setSearchInput('');
+  };
+
+  const onItemClick = (id: number) => {
+    resetSearch();
+    navigate(`${AppRoute.Item}/${id}`);
+  };
 
   return (
     <header className="header" id="header">
@@ -28,23 +55,17 @@ function Header({basketItemsCount}: HeaderProps): JSX.Element {
             </li>
           </ul>
         </nav>
-        <div className="form-search">
+        <div className={isSearchListOpen ? 'form-search list-opened' : 'form-search'}>
           <form>
             <label>
               <svg className="form-search__icon" width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-lens"></use>
               </svg>
-              <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту"/>
+              <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту" onChange={handleSearchChange} value={searchInput}/>
             </label>
-            <ul className="form-search__select-list">
-              <li className="form-search__select-item" {...{tabIndex: 0}}>Cannonball Pro MX 8i</li>
-              <li className="form-search__select-item" {...{tabIndex: 0}}>Cannonball Pro MX 7i</li>
-              <li className="form-search__select-item" {...{tabIndex: 0}}>Cannonball Pro MX 6i</li>
-              <li className="form-search__select-item" {...{tabIndex: 0}}>Cannonball Pro MX 5i</li>
-              <li className="form-search__select-item" {...{tabIndex: 0}}>Cannonball Pro MX 4i</li>
-            </ul>
+            <FormSearchList cameras={cameras} onItemClick={onItemClick}/>
           </form>
-          <button className="form-search__reset" type="reset">
+          <button className="form-search__reset" type="reset" onClick={resetSearch}>
             <svg width="10" height="10" aria-hidden="true">
               <use xlinkHref="#icon-close"></use>
             </svg><span className="visually-hidden">Сбросить поиск</span>
