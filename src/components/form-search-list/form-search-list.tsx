@@ -1,4 +1,5 @@
 import { Cameras } from '../../types/camera';
+import { memo } from 'react';
 
 type FormSearchListProps = {
   cameras: Cameras;
@@ -19,4 +20,4 @@ function FormSearchList({cameras, onItemClick}: FormSearchListProps): JSX.Elemen
   );
 }
 
-export default FormSearchList;
+export default memo(FormSearchList);

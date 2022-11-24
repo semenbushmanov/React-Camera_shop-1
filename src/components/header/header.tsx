@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { useState, ChangeEvent, useEffect } from 'react';
+import { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import { useFetchCameraSearch } from '../../hooks/api-hooks/use-fetch-camera-search';
 import FormSearchList from '../form-search-list/form-search-list';
 
@@ -30,10 +30,12 @@ function Header({basketItemsCount}: HeaderProps): JSX.Element {
     setSearchInput('');
   };
 
-  const onItemClick = (id: number) => {
-    resetSearch();
-    navigate(`${AppRoute.Item}/${id}`);
-  };
+  const onItemClick = useCallback(
+    (id: number) => {
+      resetSearch();
+      navigate(`${AppRoute.Item}/${id}`);
+    }, [navigate]
+  );
 
   return (
     <header className="header" id="header">
