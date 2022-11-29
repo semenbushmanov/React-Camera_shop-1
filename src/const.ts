@@ -32,6 +32,21 @@ export enum Tab {
   Specs = 'specs',
 }
 
+export enum QueryParams {
+  Sort = '_sort',
+  Order = '_order',
+}
+
+export enum SortCategory {
+  Price = 'price',
+  Rating = 'rating',
+}
+
+export enum SortOrder {
+  Asc = 'asc',
+  Desc = 'desc',
+}
+
 export enum Settings {
   CardsOnPageNumber = 9,
   PaginationStep = 1,

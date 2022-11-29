@@ -8,21 +8,59 @@ import ProductCardsList from '../../components/product-cards-list/product-cards-
 import AddItemModal from '../../components/add-item-modal/add-item-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { useState, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { AppRoute, Settings } from '../../const';
-import { useAppSelector } from '../../hooks';
-import { getCameras, getDataLoadingStatus } from '../../store/cameras-data/selectors';
+import { useState, useCallback, useEffect, ChangeEvent } from 'react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { AppRoute, Settings, QueryParams, SortCategory, SortOrder } from '../../const';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { fetchCamerasAction } from '../../store/api-actions';
+import { getCameras, getDataLoadingStatus, getPromoLoadingStatus } from '../../store/cameras-data/selectors';
 import { Camera } from '../../types/camera';
 
 function CatalogScreen(): JSX.Element {
   const { page } = useParams();
+  const dispatch = useAppDispatch();
   const cameras = useAppSelector(getCameras);
   const isLoading = useAppSelector(getDataLoadingStatus);
+  const isPromoLoading = useAppSelector(getPromoLoadingStatus);
   const pagesTotal = Math.ceil(cameras.length / Settings.CardsOnPageNumber);
   const currentPage = page ? Number(page) : Settings.InitialPageNumber;
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
+  const [ searchParams, setSearchParams ] = useSearchParams();
+  const sortCategoryParams = searchParams.get(QueryParams.Sort);
+  const sortOrderParams = searchParams.get(QueryParams.Order);
+
+  useEffect(() => {
+    if (sortCategoryParams === null && sortOrderParams === null) {
+      dispatch(fetchCamerasAction({params: undefined}));
+    } else {
+      if ((sortCategoryParams === SortCategory.Price || sortCategoryParams === SortCategory.Rating)
+        && (sortOrderParams === SortOrder.Asc || sortOrderParams === SortOrder.Desc)) {
+        dispatch(fetchCamerasAction({params: {
+          [QueryParams.Sort]: sortCategoryParams,
+          [QueryParams.Order]: sortOrderParams,
+        }}));
+      }
+    }
+  }, [dispatch, sortCategoryParams, sortOrderParams]);
+
+  const onSortCategoryChange = useCallback(
+    ({target}: ChangeEvent<HTMLInputElement>) => {
+      setSearchParams({
+        [QueryParams.Sort]: target.value,
+        [QueryParams.Order]: sortOrderParams ?? SortOrder.Asc,
+      });
+    }, [setSearchParams, sortOrderParams]
+  );
+
+  const onSortOrderChange = useCallback(
+    ({target}: ChangeEvent<HTMLInputElement>) => {
+      setSearchParams({
+        [QueryParams.Sort]: sortCategoryParams ?? SortCategory.Price,
+        [QueryParams.Order]: target.value,
+      });
+    }, [setSearchParams, sortCategoryParams]
+  );
 
   const openAddItemModal = useCallback(
     (camera: Camera) => {
@@ -37,7 +75,7 @@ function CatalogScreen(): JSX.Element {
     }, []
   );
 
-  if (isLoading) {
+  if (isLoading || isPromoLoading) {
     return (<LoadingScreen />);
   }
 
@@ -77,13 +115,20 @@ function CatalogScreen(): JSX.Element {
               <div className="page-content__columns">
                 <CatalogFilter />
                 <div className="catalog__content">
-                  <CatalogSorter />
+                  <CatalogSorter
+                    onSortCategoryChange={onSortCategoryChange}
+                    onSortOrderChange={onSortOrderChange}
+                    sortCategory={sortCategoryParams}
+                    sortOrder={sortOrderParams}
+                  />
                   <ProductCardsList
                     cameras={cameras}
                     currentPage={currentPage}
                     openAddItemModal={openAddItemModal}
                   />
-                  <PaginationList pagesTotal={pagesTotal} currentPage={currentPage}/>
+                  <PaginationList pagesTotal={pagesTotal} currentPage={currentPage}
+                    sortCategoryParams={sortCategoryParams} sortOrderParams={sortOrderParams}
+                  />
                 </div>
               </div>
             </div>

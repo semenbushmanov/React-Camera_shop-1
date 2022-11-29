@@ -4,12 +4,11 @@ import App from './components/app/app';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { store } from './store';
-import { fetchCamerasAction, fetchPromoAction } from './store/api-actions';
+import { fetchPromoAction } from './store/api-actions';
 import HistoryRouter from './components/history-route/history-route';
 import browserHistory from './browser-history';
 import 'react-toastify/dist/ReactToastify.css';
 
-store.dispatch(fetchCamerasAction());
 store.dispatch(fetchPromoAction());
 
 const root = ReactDOM.createRoot(

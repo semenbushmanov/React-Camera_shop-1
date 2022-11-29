@@ -9,6 +9,7 @@ const initialState: CamerasData = {
   cameras: [],
   isDataLoading:false,
   promo: {} as Promo,
+  isPromoLoading: false,
   isPosting: false,
   reviewSuccess: false,
 };
@@ -29,8 +30,15 @@ export const camerasData = createSlice({
       .addCase(fetchCamerasAction.rejected, (state) => {
         state.isDataLoading = false;
       })
+      .addCase(fetchPromoAction.pending, (state) => {
+        state.isPromoLoading = true;
+      })
       .addCase(fetchPromoAction.fulfilled, (state, action) => {
         state.promo = action.payload;
+        state.isPromoLoading = false;
+      })
+      .addCase(fetchPromoAction.rejected, (state) => {
+        state.isPromoLoading = false;
       })
       .addCase(postReviewAction.pending, (state) => {
         state.isPosting = true;

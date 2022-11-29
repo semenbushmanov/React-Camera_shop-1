@@ -12,6 +12,7 @@ describe('Reducer: camerasData', () => {
         cameras: [],
         isDataLoading:false,
         promo: {} as Promo,
+        isPromoLoading: false,
         isPosting: false,
         reviewSuccess: false,
       });
@@ -22,6 +23,7 @@ describe('Reducer: camerasData', () => {
       cameras: [],
       isDataLoading:false,
       promo: {} as Promo,
+      isPromoLoading: false,
       isPosting: false,
       reviewSuccess: false,
     };
@@ -31,6 +33,7 @@ describe('Reducer: camerasData', () => {
         cameras: fakeCameras,
         isDataLoading:false,
         promo: {},
+        isPromoLoading: false,
         isPosting: false,
         reviewSuccess: false,
       });

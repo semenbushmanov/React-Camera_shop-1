@@ -14,7 +14,9 @@ describe('Component: PaginationList', () => {
   it('should render correctly', () => {
     render(
       <HistoryRouter history={history}>
-        <PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}/>
+        <PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}
+          sortCategoryParams={null} sortOrderParams={null}
+        />
       </HistoryRouter>);
 
     expect(screen.getByText('Назад')).toBeInTheDocument();
@@ -34,7 +36,11 @@ describe('Component: PaginationList', () => {
           />
           <Route
             path='*'
-            element={<PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}/>}
+            element={
+              <PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}
+                sortCategoryParams={null} sortOrderParams={null}
+              />
+            }
           />
         </Routes>
       </HistoryRouter>);
@@ -58,7 +64,11 @@ describe('Component: PaginationList', () => {
           />
           <Route
             path='*'
-            element={<PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}/>}
+            element={
+              <PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}
+                sortCategoryParams={null} sortOrderParams={null}
+              />
+            }
           />
         </Routes>
       </HistoryRouter>);
