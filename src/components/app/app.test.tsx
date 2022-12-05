@@ -8,9 +8,10 @@ import { Promo } from '../../types/camera';
 import MockAdapter from 'axios-mock-adapter';
 import { api } from '../../services/api';
 import { makeFakeCamera, makeFakeReview } from '../../utils/mocks';
+import thunk from 'redux-thunk';
 import App from './app';
 
-const mockStore = configureMockStore();
+const mockStore = configureMockStore([thunk]);
 const mockAPI = new MockAdapter(api);
 
 const store = mockStore({

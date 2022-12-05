@@ -47,7 +47,8 @@ function Header({basketItemsCount}: HeaderProps): JSX.Element {
         </Link>
         <nav className="main-nav header__main-nav">
           <ul className="main-nav__list">
-            <li className="main-nav__item"><Link className="main-nav__link" to={AppRoute.Root}>Каталог</Link>
+            <li className="main-nav__item">
+              <Link className="main-nav__link" to={AppRoute.Root}>Каталог</Link>
             </li>
             <li className="main-nav__item"><Link className="main-nav__link" to=''>Гарантии</Link>
             </li>
@@ -63,9 +64,11 @@ function Header({basketItemsCount}: HeaderProps): JSX.Element {
               <svg className="form-search__icon" width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-lens"></use>
               </svg>
-              <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту" onChange={handleSearchChange} value={searchInput}/>
+              <input className="form-search__input" type="text" autoComplete="off"
+                placeholder="Поиск по сайту" onChange={handleSearchChange} value={searchInput}
+              />
             </label>
-            <FormSearchList cameras={cameras} onItemClick={onItemClick}/>
+            {cameras.length > 0 && <FormSearchList cameras={cameras} onItemClick={onItemClick}/>}
           </form>
           <button className="form-search__reset" type="reset" onClick={resetSearch}>
             <svg width="10" height="10" aria-hidden="true">

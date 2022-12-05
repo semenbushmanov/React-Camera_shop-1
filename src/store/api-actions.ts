@@ -2,17 +2,28 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { Cameras, Promo, ReviewPost } from '../types/camera';
-import { QueryParamsType } from '../types/query';
 import { APIRoute } from '../const';
 
-export const fetchCamerasAction = createAsyncThunk<Cameras, {params: QueryParamsType | undefined}, {
+export const fetchOriginalCamerasAction = createAsyncThunk<Cameras, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchOriginalCameras',
+  async (_arg, {dispatch, extra: api}) => {
+    const {data} = await api.get<Cameras>(APIRoute.Cameras);
+    return data;
+  },
+);
+
+export const fetchCamerasAction = createAsyncThunk<Cameras, string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchCameras',
-  async ({params}, {dispatch, extra: api}) => {
-    const {data} = await api.get<Cameras>(APIRoute.Cameras, {params});
+  async (params, {dispatch, extra: api}) => {
+    const {data} = await api.get<Cameras>(`${APIRoute.Cameras}?${params}`);
     return data;
   },
 );

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { Promo } from '../../types/camera';
 import { CamerasData } from '../../types/state';
-import { fetchCamerasAction, fetchPromoAction, postReviewAction } from '../api-actions';
+import { fetchOriginalCamerasAction, fetchCamerasAction, fetchPromoAction, postReviewAction } from '../api-actions';
 import { resetReviewSuccess } from '../action';
 
 const initialState: CamerasData = {
@@ -20,6 +20,16 @@ export const camerasData = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(fetchOriginalCamerasAction.pending, (state) => {
+        state.isDataLoading = true;
+      })
+      .addCase(fetchOriginalCamerasAction.fulfilled, (state, action) => {
+        state.cameras = action.payload;
+        state.isDataLoading = false;
+      })
+      .addCase(fetchOriginalCamerasAction.rejected, (state) => {
+        state.isDataLoading = false;
+      })
       .addCase(fetchCamerasAction.pending, (state) => {
         state.isDataLoading = true;
       })

@@ -35,6 +35,11 @@ export enum Tab {
 export enum QueryParams {
   Sort = '_sort',
   Order = '_order',
+  PriceMin = 'price_gte',
+  PriceMax = 'price_lte',
+  Category = 'category',
+  Type = 'type',
+  Level = 'level',
 }
 
 export enum SortCategory {
@@ -45,6 +50,24 @@ export enum SortCategory {
 export enum SortOrder {
   Asc = 'asc',
   Desc = 'desc',
+}
+
+export enum CameraCategory {
+  Photo = 'Фотоаппарат',
+  Video = 'Видеокамера',
+}
+
+export enum CameraType {
+  Digital = 'Цифровая',
+  Film = 'Плёночная',
+  Snapshot = 'Моментальная',
+  Collection = 'Коллекционная',
+}
+
+export enum CameraLevel {
+  Novice = 'Нулевой',
+  Amateur = 'Любительский',
+  Pro = 'Профессиональный',
 }
 
 export enum Settings {

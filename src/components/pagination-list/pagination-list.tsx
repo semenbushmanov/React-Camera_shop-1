@@ -1,19 +1,21 @@
 import { Link } from 'react-router-dom';
-import { AppRoute, Settings, QueryParams } from '../../const';
+import { AppRoute, Settings } from '../../const';
 
 type PaginationListProps = {
   pagesTotal: number;
   currentPage: number;
-  sortCategoryParams: string | null;
-  sortOrderParams: string | null;
+  searchParams: string;
+  // sortCategoryParams: string | null;
+  // sortOrderParams: string | null;
 };
 
 const INDEX_TO_PAGE_DIFFERENCE = 1;
 
 function PaginationList(props: PaginationListProps): JSX.Element {
-  const { pagesTotal, currentPage, sortCategoryParams, sortOrderParams } = props;
-  const searchParams = sortCategoryParams && sortOrderParams ?
-    `?${QueryParams.Sort}=${sortCategoryParams}&${QueryParams.Order}=${sortOrderParams}` : '';
+  const { pagesTotal, currentPage, searchParams } = props;
+  // const searchParams = sortCategoryParams && sortOrderParams ?
+  //   `?${QueryParams.Sort}=${sortCategoryParams}&${QueryParams.Order}=${sortOrderParams}` : '';
+  const queryParams = searchParams ? `?${searchParams}` : '';
 
   return (
     <div className="pagination">
@@ -21,8 +23,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
         {currentPage > Settings.InitialPageNumber &&
           <li className="pagination__item">
             <Link className="pagination__link pagination__link--text"
-              to={{ pathname: `${AppRoute.Catalog}/${currentPage - Settings.PaginationStep}`,
-                search: searchParams }}
+              to={`${AppRoute.Catalog}/${currentPage - Settings.PaginationStep}${queryParams}`}
             >Назад
             </Link>
           </li>}
@@ -32,8 +33,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
               className={pageIndex + INDEX_TO_PAGE_DIFFERENCE === currentPage ?
                 'pagination__link pagination__link--active'
                 : 'pagination__link'}
-              to={{ pathname: `${AppRoute.Catalog}/${pageIndex + INDEX_TO_PAGE_DIFFERENCE}`,
-                search: searchParams }}
+              to={`${AppRoute.Catalog}/${pageIndex + INDEX_TO_PAGE_DIFFERENCE}${queryParams}`}
             >
               {pageIndex + INDEX_TO_PAGE_DIFFERENCE}
             </Link>
@@ -42,8 +42,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
         {currentPage < pagesTotal &&
           <li className="pagination__item">
             <Link className="pagination__link pagination__link--text"
-              to={{ pathname: `${AppRoute.Catalog}/${currentPage + Settings.PaginationStep}`,
-                search: searchParams }}
+              to={`${AppRoute.Catalog}/${currentPage + Settings.PaginationStep}${queryParams}`}
             >Далее
             </Link>
           </li>}

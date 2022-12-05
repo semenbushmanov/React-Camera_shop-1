@@ -9,16 +9,17 @@ import AddItemModal from '../../components/add-item-modal/add-item-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { useState, useCallback, useEffect, ChangeEvent } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { AppRoute, Settings, QueryParams, SortCategory, SortOrder } from '../../const';
+import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { AppRoute, Settings, QueryParams, SortCategory, SortOrder, CameraCategory, CameraType, CameraLevel } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { fetchCamerasAction } from '../../store/api-actions';
+import { fetchOriginalCamerasAction, fetchCamerasAction } from '../../store/api-actions';
 import { getCameras, getDataLoadingStatus, getPromoLoadingStatus } from '../../store/cameras-data/selectors';
 import { Camera } from '../../types/camera';
 
 function CatalogScreen(): JSX.Element {
   const { page } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const cameras = useAppSelector(getCameras);
   const isLoading = useAppSelector(getDataLoadingStatus);
   const isPromoLoading = useAppSelector(getPromoLoadingStatus);
@@ -29,37 +30,95 @@ function CatalogScreen(): JSX.Element {
   const [ searchParams, setSearchParams ] = useSearchParams();
   const sortCategoryParams = searchParams.get(QueryParams.Sort);
   const sortOrderParams = searchParams.get(QueryParams.Order);
+  const priceMinParams = searchParams.get(QueryParams.PriceMin);
+  const priceMaxParams = searchParams.get(QueryParams.PriceMax);
+  const cameraCategoryParams = searchParams.getAll(QueryParams.Category);
+  const cameraTypeParams = searchParams.getAll(QueryParams.Type);
+  const cameraLevelParams = searchParams.getAll(QueryParams.Level);
 
   useEffect(() => {
-    if (sortCategoryParams === null && sortOrderParams === null) {
-      dispatch(fetchCamerasAction({params: undefined}));
-    } else {
-      if ((sortCategoryParams === SortCategory.Price || sortCategoryParams === SortCategory.Rating)
-        && (sortOrderParams === SortOrder.Asc || sortOrderParams === SortOrder.Desc)) {
-        dispatch(fetchCamerasAction({params: {
-          [QueryParams.Sort]: sortCategoryParams,
-          [QueryParams.Order]: sortOrderParams,
-        }}));
-      }
+    if (searchParams) {
+      dispatch(fetchCamerasAction(searchParams.toString()));
+
+      return;
     }
-  }, [dispatch, sortCategoryParams, sortOrderParams]);
+
+    dispatch(fetchOriginalCamerasAction());
+  }, [dispatch, searchParams, sortCategoryParams, sortOrderParams]);
+
+  const onPriceChange = useCallback(
+    (minPrice: string, maxPrice: string) => {
+      const updatedSearchParams = new URLSearchParams(searchParams);
+
+      if (minPrice) {
+        updatedSearchParams.set(QueryParams.PriceMin, minPrice);
+      }
+
+      if (maxPrice) {
+        updatedSearchParams.set(QueryParams.PriceMax, maxPrice);
+      }
+
+      navigate(`${AppRoute.Catalog}/${Settings.InitialPageNumber}?${updatedSearchParams.toString()}`);
+    }, [navigate, searchParams]
+  );
+
+  const onFilterChange = useCallback(
+    ({target}: ChangeEvent<HTMLInputElement>) => {
+      const updatedSearchParams = new URLSearchParams(searchParams);
+
+      switch (target.name) {
+        case 'photocamera': case 'videocamera': {
+          const cameraCategories = cameraCategoryParams.includes(target.value) ?
+            cameraCategoryParams.filter((category) => category !== target.value) :
+            [...cameraCategoryParams, target.value];
+          updatedSearchParams.delete(QueryParams.Category);
+          cameraCategories.forEach((category) => updatedSearchParams.append(QueryParams.Category, category));
+          break;
+        }
+
+        case 'digital': case 'film': case 'snapshot': case 'collection': {
+          const cameraTypes = cameraTypeParams.includes(target.value) ?
+            cameraTypeParams.filter((type) => type !== target.value) :
+            [...cameraTypeParams, target.value];
+          updatedSearchParams.delete(QueryParams.Type);
+          cameraTypes.forEach((type) => updatedSearchParams.append(QueryParams.Type, type));
+          break;
+        }
+
+        case 'zero': case 'non-professional': case'professional': {
+          const cameraLevels = cameraLevelParams.includes(target.value) ?
+            cameraLevelParams.filter((level) => level !== target.value) :
+            [...cameraLevelParams, target.value];
+          updatedSearchParams.delete(QueryParams.Level);
+          cameraLevels.forEach((level) => updatedSearchParams.append(QueryParams.Level, level));
+          break;
+        }
+      }
+
+      navigate(`${AppRoute.Catalog}/${Settings.InitialPageNumber}?${updatedSearchParams.toString()}`);
+    }, [cameraCategoryParams, cameraLevelParams, cameraTypeParams, navigate, searchParams]
+  );
+
+  const onFilterReset = useCallback(
+    () => navigate(`${AppRoute.Catalog}/${Settings.InitialPageNumber}}`), [navigate]
+  );
 
   const onSortCategoryChange = useCallback(
     ({target}: ChangeEvent<HTMLInputElement>) => {
-      setSearchParams({
-        [QueryParams.Sort]: target.value,
-        [QueryParams.Order]: sortOrderParams ?? SortOrder.Asc,
-      });
-    }, [setSearchParams, sortOrderParams]
+      const updatedSearchParams = new URLSearchParams(searchParams);
+      updatedSearchParams.set(QueryParams.Sort, target.value);
+      updatedSearchParams.set(QueryParams.Order, sortOrderParams ?? SortOrder.Asc);
+      setSearchParams(updatedSearchParams);
+    }, [searchParams, setSearchParams, sortOrderParams]
   );
 
   const onSortOrderChange = useCallback(
     ({target}: ChangeEvent<HTMLInputElement>) => {
-      setSearchParams({
-        [QueryParams.Sort]: sortCategoryParams ?? SortCategory.Price,
-        [QueryParams.Order]: target.value,
-      });
-    }, [setSearchParams, sortCategoryParams]
+      const updatedSearchParams = new URLSearchParams(searchParams);
+      updatedSearchParams.set(QueryParams.Sort, sortCategoryParams ?? SortCategory.Price);
+      updatedSearchParams.set(QueryParams.Order, target.value);
+      setSearchParams(updatedSearchParams);
+    }, [searchParams, setSearchParams, sortCategoryParams]
   );
 
   const openAddItemModal = useCallback(
@@ -113,7 +172,22 @@ function CatalogScreen(): JSX.Element {
             <div className="container">
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
               <div className="page-content__columns">
-                <CatalogFilter />
+                <CatalogFilter
+                  minPrice={priceMinParams ?? ''}
+                  maxPrice={priceMaxParams ?? ''}
+                  isPhotocamera={cameraCategoryParams.includes(CameraCategory.Photo)}
+                  isVideoCamera={cameraCategoryParams.includes(CameraCategory.Video)}
+                  isDigital={cameraTypeParams.includes(CameraType.Digital)}
+                  isFilm={cameraTypeParams.includes(CameraType.Film)}
+                  isSnapshot={cameraTypeParams.includes(CameraType.Snapshot)}
+                  isCollection={cameraTypeParams.includes(CameraType.Collection)}
+                  isNovice={cameraLevelParams.includes(CameraLevel.Novice)}
+                  isAmateur={cameraLevelParams.includes(CameraLevel.Amateur)}
+                  isPro={cameraLevelParams.includes(CameraLevel.Pro)}
+                  onPriceChange={onPriceChange}
+                  onFilterChange={onFilterChange}
+                  onFilterReset={onFilterReset}
+                />
                 <div className="catalog__content">
                   <CatalogSorter
                     onSortCategoryChange={onSortCategoryChange}
@@ -127,7 +201,7 @@ function CatalogScreen(): JSX.Element {
                     openAddItemModal={openAddItemModal}
                   />
                   <PaginationList pagesTotal={pagesTotal} currentPage={currentPage}
-                    sortCategoryParams={sortCategoryParams} sortOrderParams={sortOrderParams}
+                    searchParams={searchParams.toString()}
                   />
                 </div>
               </div>

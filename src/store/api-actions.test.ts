@@ -3,7 +3,7 @@ import thunk, { ThunkDispatch } from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { api } from '../services/api';
-import { fetchCamerasAction, fetchPromoAction, postReviewAction } from './api-actions';
+import { fetchOriginalCamerasAction, fetchPromoAction, postReviewAction } from './api-actions';
 import { APIRoute } from '../const';
 import { State } from '../types/state';
 import { makeFakeCamera, makeFakePromo, makeFakeReviewPost } from '../utils/mocks';
@@ -26,13 +26,13 @@ describe('Async actions', () => {
 
     const store = mockStore();
 
-    await store.dispatch(fetchCamerasAction({params: undefined}));
+    await store.dispatch(fetchOriginalCamerasAction());
 
     const actions = store.getActions().map(({type}) => type as string);
 
     expect(actions).toEqual([
-      fetchCamerasAction.pending.type,
-      fetchCamerasAction.fulfilled.type
+      fetchOriginalCamerasAction.pending.type,
+      fetchOriginalCamerasAction.fulfilled.type
     ]);
   });
 

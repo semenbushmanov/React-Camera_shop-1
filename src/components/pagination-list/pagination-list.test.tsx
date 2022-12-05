@@ -15,7 +15,7 @@ describe('Component: PaginationList', () => {
     render(
       <HistoryRouter history={history}>
         <PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}
-          sortCategoryParams={null} sortOrderParams={null}
+          searchParams={''}
         />
       </HistoryRouter>);
 
@@ -38,7 +38,7 @@ describe('Component: PaginationList', () => {
             path='*'
             element={
               <PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}
-                sortCategoryParams={null} sortOrderParams={null}
+                searchParams={''}
               />
             }
           />
@@ -66,7 +66,7 @@ describe('Component: PaginationList', () => {
             path='*'
             element={
               <PaginationList pagesTotal={totalPagesNumber} currentPage={middlePageNumber}
-                sortCategoryParams={null} sortOrderParams={null}
+                searchParams={''}
               />
             }
           />
