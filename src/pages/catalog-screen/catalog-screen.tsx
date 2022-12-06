@@ -73,6 +73,13 @@ function CatalogScreen(): JSX.Element {
             [...cameraCategoryParams, target.value];
           updatedSearchParams.delete(QueryParams.Category);
           cameraCategories.forEach((category) => updatedSearchParams.append(QueryParams.Category, category));
+
+          if (cameraCategories.includes(CameraCategory.Video) && !cameraCategories.includes(CameraCategory.Photo)) {
+            const cameraTypes = cameraTypeParams.filter((type) => type !== CameraType.Film && type !== CameraType.Snapshot);
+            updatedSearchParams.delete(QueryParams.Type);
+            cameraTypes.forEach((type) => updatedSearchParams.append(QueryParams.Type, type));
+          }
+
           break;
         }
 

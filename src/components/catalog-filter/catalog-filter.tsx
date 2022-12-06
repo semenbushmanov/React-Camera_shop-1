@@ -101,7 +101,7 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
             </div>
             <div className="custom-checkbox catalog-filter__item">
               <label>
-                <input type="checkbox" name="film" disabled={isVideoCamera} checked={isFilm}
+                <input type="checkbox" name="film" disabled={isVideoCamera && !isPhotocamera} checked={isFilm}
                   value={CameraType.Film} onChange={onFilterChange}
                 />
                 <span className="custom-checkbox__icon"></span>
@@ -110,7 +110,7 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
             </div>
             <div className="custom-checkbox catalog-filter__item">
               <label>
-                <input type="checkbox" name="snapshot" disabled={isVideoCamera}
+                <input type="checkbox" name="snapshot" disabled={isVideoCamera && !isPhotocamera}
                   checked={isSnapshot} value={CameraType.Snapshot} onChange={onFilterChange}
                 />
                 <span className="custom-checkbox__icon"></span>

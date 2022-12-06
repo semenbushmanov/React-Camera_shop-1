@@ -5,16 +5,12 @@ type PaginationListProps = {
   pagesTotal: number;
   currentPage: number;
   searchParams: string;
-  // sortCategoryParams: string | null;
-  // sortOrderParams: string | null;
 };
 
 const INDEX_TO_PAGE_DIFFERENCE = 1;
 
 function PaginationList(props: PaginationListProps): JSX.Element {
   const { pagesTotal, currentPage, searchParams } = props;
-  // const searchParams = sortCategoryParams && sortOrderParams ?
-  //   `?${QueryParams.Sort}=${sortCategoryParams}&${QueryParams.Order}=${sortOrderParams}` : '';
   const queryParams = searchParams ? `?${searchParams}` : '';
 
   return (
