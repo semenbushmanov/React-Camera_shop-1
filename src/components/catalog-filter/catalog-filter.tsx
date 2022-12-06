@@ -1,9 +1,12 @@
 import { useState, ChangeEvent, KeyboardEvent, memo } from 'react';
 import { CameraCategory, CameraType, CameraLevel } from '../../const';
+import { toast } from 'react-toastify';
 
 type CatalogFilterProps = {
   minPrice: string;
   maxPrice: string;
+  minCatalogPrice: string;
+  maxCatalogPrice: string;
   isPhotocamera: boolean;
   isVideoCamera: boolean;
   isDigital: boolean;
@@ -19,8 +22,9 @@ type CatalogFilterProps = {
 };
 
 function CatalogFilter(props: CatalogFilterProps): JSX.Element {
-  const { minPrice, maxPrice, isPhotocamera, isVideoCamera, isDigital, isFilm, isSnapshot, isCollection,
-    isNovice, isAmateur, isPro, onPriceChange, onFilterChange, onFilterReset } = props;
+  const { minPrice, maxPrice, minCatalogPrice, maxCatalogPrice, isPhotocamera, isVideoCamera,
+    isDigital, isFilm, isSnapshot, isCollection, isNovice, isAmateur, isPro,
+    onPriceChange, onFilterChange, onFilterReset } = props;
 
   const [ minPriceInput, setMinPriceInput ] = useState(minPrice);
   const [ maxPriceInput, setMaxPriceInput ] = useState(maxPrice);
@@ -34,13 +38,18 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
   };
 
   const handlePriceChange = ({target}: ChangeEvent<HTMLInputElement>) => {
-    if (target.name === 'price') {
-      setMinPriceInput(target.value);
+    if (Number(target.value) >= 0) {
+      if (target.name === 'price') {
+        setMinPriceInput(target.value);
 
+        return;
+      }
+
+      setMaxPriceInput(target.value);
       return;
     }
 
-    setMaxPriceInput(target.value);
+    toast.warn('Можно ввести только положительное число');
   };
 
   return (
@@ -53,14 +62,14 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
             <div className="catalog-filter__price-range">
               <div className="custom-input">
                 <label>
-                  <input type="number" name="price" placeholder="от" value={minPriceInput}
+                  <input type="number" name="price" placeholder={minCatalogPrice} value={minPriceInput}
                     onChange={handlePriceChange} onKeyDown={handleKeyDown}
                   />
                 </label>
               </div>
               <div className="custom-input">
                 <label>
-                  <input type="number" name="priceUp" placeholder="до" value={maxPriceInput}
+                  <input type="number" name="priceUp" placeholder={maxCatalogPrice} value={maxPriceInput}
                     onChange={handlePriceChange} onKeyDown={handleKeyDown}
                   />
                 </label>

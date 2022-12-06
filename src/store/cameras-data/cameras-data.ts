@@ -6,6 +6,7 @@ import { fetchOriginalCamerasAction, fetchCamerasAction, fetchPromoAction, postR
 import { resetReviewSuccess } from '../action';
 
 const initialState: CamerasData = {
+  originalCameras: [],
   cameras: [],
   isDataLoading:false,
   promo: {} as Promo,
@@ -24,6 +25,7 @@ export const camerasData = createSlice({
         state.isDataLoading = true;
       })
       .addCase(fetchOriginalCamerasAction.fulfilled, (state, action) => {
+        state.originalCameras = action.payload;
         state.cameras = action.payload;
         state.isDataLoading = false;
       })

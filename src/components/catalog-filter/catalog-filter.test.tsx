@@ -7,6 +7,8 @@ describe('Component: CatalogFilter', () => {
       <CatalogFilter
         minPrice={''}
         maxPrice={''}
+        minCatalogPrice={'1000'}
+        maxCatalogPrice={'80000'}
         isPhotocamera={false}
         isVideoCamera={false}
         isDigital={false}

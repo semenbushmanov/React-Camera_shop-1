@@ -1,4 +1,4 @@
-import { Review } from '../types/camera';
+import { Cameras, Review } from '../types/camera';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
@@ -15,4 +15,27 @@ export const sortReviewsByDate = (reviewA: Review, reviewB: Review) => {
   }
 
   return 0;
+};
+
+const getSortedPrices = (cameras: Cameras) => {
+  if (cameras.length === 0) {
+    return [0];
+  }
+
+  const cameraPrices = cameras.map((camera) => camera.price);
+  cameraPrices.sort((a, b) => a - b);
+
+  return cameraPrices;
+};
+
+export const getMinPrice = (cameras: Cameras) => {
+  const sortedCameraPrices = getSortedPrices(cameras);
+
+  return sortedCameraPrices[0];
+};
+
+export const getMaxPrice = (cameras: Cameras) => {
+  const sortedCameraPrices = getSortedPrices(cameras);
+
+  return sortedCameraPrices[cameras.length - 1];
 };
