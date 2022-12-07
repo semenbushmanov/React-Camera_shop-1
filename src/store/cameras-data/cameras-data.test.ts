@@ -10,6 +10,7 @@ describe('Reducer: camerasData', () => {
     expect(camerasData.reducer(void 0, {type: 'UNKNOWN_ACTION'}))
       .toEqual({
         originalCameras: [],
+        isInitialLoading: false,
         cameras: [],
         isDataLoading:false,
         promo: {} as Promo,
@@ -22,6 +23,7 @@ describe('Reducer: camerasData', () => {
   it('should update cameras by loading cameras', () => {
     const state = {
       originalCameras: [],
+      isInitialLoading: false,
       cameras: [],
       isDataLoading:false,
       promo: {} as Promo,
@@ -33,6 +35,7 @@ describe('Reducer: camerasData', () => {
     expect(camerasData.reducer(state, {type: fetchCamerasAction.fulfilled.type, payload: fakeCameras}))
       .toEqual({
         originalCameras: fakeCameras,
+        isInitialLoading: false,
         cameras: fakeCameras,
         isDataLoading:false,
         promo: {},

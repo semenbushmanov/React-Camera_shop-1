@@ -3,6 +3,7 @@ import { Cameras, Promo } from './camera';
 
 export type CamerasData = {
   originalCameras: Cameras;
+  isInitialLoading: boolean;
   cameras: Cameras;
   isDataLoading: boolean;
   promo: Promo;

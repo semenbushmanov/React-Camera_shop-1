@@ -16,6 +16,10 @@ function ProductCardsList({cameras, currentPage, openAddItemModal}: ProductCards
   const finalPoint = startingPoint + Settings.CardsOnPageNumber;
   const camerasToRender = cameras.slice(startingPoint, finalPoint);
 
+  if (cameras.length === 0) {
+    return <p>по вашему запросу ничего не найдено</p>;
+  }
+
   return (
     <div className="cards catalog__cards">
       {camerasToRender.map(

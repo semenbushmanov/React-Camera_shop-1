@@ -18,7 +18,7 @@ describe('Async actions', () => {
       ThunkDispatch<State, typeof api, Action>
     >(middlewares);
 
-  it('should dispatch data/fetchCameras when GET /cameras', async () => {
+  it('should dispatch data/fetchOriginalCameras when GET /cameras', async () => {
     const mockCameras = [ makeFakeCamera(), makeFakeCamera() ];
     mockAPI
       .onGet(APIRoute.Cameras)

@@ -7,6 +7,7 @@ import { resetReviewSuccess } from '../action';
 
 const initialState: CamerasData = {
   originalCameras: [],
+  isInitialLoading: false,
   cameras: [],
   isDataLoading:false,
   promo: {} as Promo,
@@ -22,15 +23,15 @@ export const camerasData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchOriginalCamerasAction.pending, (state) => {
-        state.isDataLoading = true;
+        state.isInitialLoading = true;
       })
       .addCase(fetchOriginalCamerasAction.fulfilled, (state, action) => {
         state.originalCameras = action.payload;
         state.cameras = action.payload;
-        state.isDataLoading = false;
+        state.isInitialLoading = false;
       })
       .addCase(fetchOriginalCamerasAction.rejected, (state) => {
-        state.isDataLoading = false;
+        state.isInitialLoading = false;
       })
       .addCase(fetchCamerasAction.pending, (state) => {
         state.isDataLoading = true;

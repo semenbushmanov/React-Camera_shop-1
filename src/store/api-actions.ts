@@ -23,7 +23,8 @@ export const fetchCamerasAction = createAsyncThunk<Cameras, string, {
 }>(
   'data/fetchCameras',
   async (params, {dispatch, extra: api}) => {
-    const {data} = await api.get<Cameras>(`${APIRoute.Cameras}?${params}`);
+    const queryParams = params ? `?${params}` : '';
+    const {data} = await api.get<Cameras>(`${APIRoute.Cameras}${queryParams}`);
     return data;
   },
 );

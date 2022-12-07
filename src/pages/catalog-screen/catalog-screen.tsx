@@ -10,12 +10,14 @@ import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { useState, useCallback, useEffect, useMemo, ChangeEvent } from 'react';
 import { Link, useParams, useSearchParams, useNavigate } from 'react-router-dom';
-import { AppRoute, Settings, QueryParams, SortCategory, SortOrder, CameraCategory, CameraType, CameraLevel } from '../../const';
+import { AppRoute, Settings, QueryParams, SortCategory, SortOrder,
+  CameraCategory, CameraType, CameraLevel } from '../../const';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { fetchOriginalCamerasAction, fetchCamerasAction } from '../../store/api-actions';
-import { getOriginalCameras, getCameras, getDataLoadingStatus, getPromoLoadingStatus } from '../../store/cameras-data/selectors';
+import { fetchCamerasAction } from '../../store/api-actions';
+import { getOriginalCameras, getCameras, getDataLoadingStatus, getInitialLoadingStatus,
+  getPromoLoadingStatus } from '../../store/cameras-data/selectors';
 import { Camera } from '../../types/camera';
-import { getMinPrice, getMaxPrice } from '../../utils/common';
+import { getSortedPrices } from '../../utils/common';
 
 function CatalogScreen(): JSX.Element {
   const { page } = useParams();
@@ -23,12 +25,12 @@ function CatalogScreen(): JSX.Element {
   const navigate = useNavigate();
   const originalCameras = useAppSelector(getOriginalCameras);
   const cameras = useAppSelector(getCameras);
+  const isInitialLoading = useAppSelector(getInitialLoadingStatus);
   const isLoading = useAppSelector(getDataLoadingStatus);
   const isPromoLoading = useAppSelector(getPromoLoadingStatus);
   const pagesTotal = Math.ceil(cameras.length / Settings.CardsOnPageNumber);
   const currentPage = page ? Number(page) : Settings.InitialPageNumber;
-  const minCatalogPrice = useMemo(() => getMinPrice(originalCameras), [originalCameras]);
-  const maxCatalogPrice = useMemo(() => getMaxPrice(originalCameras), [originalCameras]);
+  const sortedPrices = useMemo(() => getSortedPrices(originalCameras), [originalCameras]);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const [ searchParams, setSearchParams ] = useSearchParams();
@@ -41,14 +43,10 @@ function CatalogScreen(): JSX.Element {
   const cameraLevelParams = searchParams.getAll(QueryParams.Level);
 
   useEffect(() => {
-    if (searchParams.toString()) {
+    if (!isInitialLoading) {
       dispatch(fetchCamerasAction(searchParams.toString()));
-
-      return;
     }
-
-    dispatch(fetchOriginalCamerasAction());
-  }, [dispatch, searchParams, sortCategoryParams, sortOrderParams]);
+  }, [dispatch, isInitialLoading, searchParams]);
 
   const onPriceChange = useCallback(
     (minPrice: string, maxPrice: string) => {
@@ -145,7 +143,7 @@ function CatalogScreen(): JSX.Element {
     }, []
   );
 
-  if (isLoading || isPromoLoading) {
+  if (isLoading || isInitialLoading || isPromoLoading) {
     return (<LoadingScreen />);
   }
 
@@ -186,8 +184,7 @@ function CatalogScreen(): JSX.Element {
                 <CatalogFilter
                   minPrice={priceMinParams ?? ''}
                   maxPrice={priceMaxParams ?? ''}
-                  minCatalogPrice={minCatalogPrice.toString()}
-                  maxCatalogPrice={maxCatalogPrice.toString()}
+                  sortedPrices = {sortedPrices}
                   isPhotocamera={cameraCategoryParams.includes(CameraCategory.Photo)}
                   isVideoCamera={cameraCategoryParams.includes(CameraCategory.Video)}
                   isDigital={cameraTypeParams.includes(CameraType.Digital)}

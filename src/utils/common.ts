@@ -17,7 +17,7 @@ export const sortReviewsByDate = (reviewA: Review, reviewB: Review) => {
   return 0;
 };
 
-const getSortedPrices = (cameras: Cameras) => {
+export const getSortedPrices = (cameras: Cameras) => {
   if (cameras.length === 0) {
     return [0];
   }
@@ -28,14 +28,17 @@ const getSortedPrices = (cameras: Cameras) => {
   return cameraPrices;
 };
 
-export const getMinPrice = (cameras: Cameras) => {
-  const sortedCameraPrices = getSortedPrices(cameras);
+export const getMinPrice = (sortedPrices: number[]) => sortedPrices[0];
+export const getMaxPrice = (sortedPrices: number[]) => sortedPrices[sortedPrices.length - 1];
 
-  return sortedCameraPrices[0];
+export const getClosestMinPrice = (userPrice: number, sortedPrices: number[]) => {
+  const minSortedPrices = sortedPrices.filter((price) => price <= userPrice);
+
+  return minSortedPrices[minSortedPrices.length - 1];
 };
 
-export const getMaxPrice = (cameras: Cameras) => {
-  const sortedCameraPrices = getSortedPrices(cameras);
+export const getClosestMaxPrice = (userPrice: number, sortedPrices: number[]) => {
+  const minSortedPrices = sortedPrices.filter((price) => price >= userPrice);
 
-  return sortedCameraPrices[cameras.length - 1];
+  return minSortedPrices[0];
 };
