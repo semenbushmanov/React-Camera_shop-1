@@ -17,9 +17,12 @@ const mockAPI = new MockAdapter(api);
 const store = mockStore({
   BASKET: {camerasIDs: []},
   DATA: {
+    originalCameras: [],
+    isInitialLoading: false,
     cameras: [],
     isDataLoading:false,
     promo: {} as Promo,
+    isPromoLoading: false,
     isPosting: false,
     reviewSuccess: false,
   },

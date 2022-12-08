@@ -1,6 +1,6 @@
 import { camerasData } from './cameras-data';
 import { makeFakeCamera } from '../../utils/mocks';
-import { fetchCamerasAction } from '../api-actions';
+import { fetchOriginalCamerasAction } from '../api-actions';
 import { Promo } from '../../types/camera';
 
 const fakeCameras = [ makeFakeCamera(), makeFakeCamera() ];
@@ -32,7 +32,7 @@ describe('Reducer: camerasData', () => {
       reviewSuccess: false,
     };
 
-    expect(camerasData.reducer(state, {type: fetchCamerasAction.fulfilled.type, payload: fakeCameras}))
+    expect(camerasData.reducer(state, {type: fetchOriginalCamerasAction.fulfilled.type, payload: fakeCameras}))
       .toEqual({
         originalCameras: fakeCameras,
         isInitialLoading: false,

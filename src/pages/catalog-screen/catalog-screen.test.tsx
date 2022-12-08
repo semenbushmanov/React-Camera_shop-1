@@ -15,6 +15,8 @@ const history = createMemoryHistory();
 const store = mockStore({
   BASKET: {camerasIDs: []},
   DATA: {
+    originalCameras: mockCameras,
+    isInitialLoading: false,
     cameras: mockCameras,
     isDataLoading: false,
     promo: mockPromo,
