@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CatalogSorter from './catalog-sorter';
 
-describe.only('Component: CatalogSorter', () => {
+describe('Component: CatalogSorter', () => {
   it('should render correctly', () => {
     render(
       <CatalogSorter
