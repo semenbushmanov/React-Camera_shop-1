@@ -3,7 +3,7 @@ import thunk, { ThunkDispatch } from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { api } from '../services/api';
-import { fetchOriginalCamerasAction, fetchPromoAction, postReviewAction } from './api-actions';
+import { fetchOriginalCamerasAction, fetchCamerasAction, fetchPromoAction, postReviewAction } from './api-actions';
 import { APIRoute } from '../const';
 import { State } from '../types/state';
 import { makeFakeCamera, makeFakePromo, makeFakeReviewPost } from '../utils/mocks';
@@ -18,7 +18,7 @@ describe('Async actions', () => {
       ThunkDispatch<State, typeof api, Action>
     >(middlewares);
 
-  it('should dispatch data/fetchOriginalCameras when GET /cameras', async () => {
+  it('should dispatch data/fetchOriginalCameras when GET /cameras at app start', async () => {
     const mockCameras = [ makeFakeCamera(), makeFakeCamera() ];
     mockAPI
       .onGet(APIRoute.Cameras)
@@ -33,6 +33,24 @@ describe('Async actions', () => {
     expect(actions).toEqual([
       fetchOriginalCamerasAction.pending.type,
       fetchOriginalCamerasAction.fulfilled.type
+    ]);
+  });
+
+  it('should dispatch data/fetchOriginalCameras when GET /cameras on url params change', async () => {
+    const mockCameras = [ makeFakeCamera(), makeFakeCamera() ];
+    mockAPI
+      .onGet(APIRoute.Cameras)
+      .reply(200, mockCameras);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchCamerasAction(''));
+
+    const actions = store.getActions().map(({type}) => type as string);
+
+    expect(actions).toEqual([
+      fetchCamerasAction.pending.type,
+      fetchCamerasAction.fulfilled.type
     ]);
   });
 
@@ -54,7 +72,7 @@ describe('Async actions', () => {
     ]);
   });
 
-  it('should dispatch data/postReview when Post /reviews', async () => {
+  it('should dispatch data/postReview when POST /reviews', async () => {
     const mockReviewPost = makeFakeReviewPost();
     mockAPI
       .onPost(APIRoute.Reviews)
