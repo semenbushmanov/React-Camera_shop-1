@@ -109,7 +109,7 @@ function CatalogScreen(): JSX.Element {
   );
 
   const onFilterReset = useCallback(
-    () => navigate(`${AppRoute.Catalog}/${Settings.InitialPageNumber}}`), [navigate]
+    () => navigate(`${AppRoute.Catalog}/${Settings.InitialPageNumber}`), [navigate]
   );
 
   const onSortCategoryChange = useCallback(

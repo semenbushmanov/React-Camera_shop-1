@@ -31,34 +31,38 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
   const [ minPriceInput, setMinPriceInput ] = useState(minPrice);
   const [ maxPriceInput, setMaxPriceInput ] = useState(maxPrice);
 
+  const handlePriceChange = () => {
+    if (minPriceInput && maxPriceInput && (Number(maxPriceInput) < Number(minPriceInput))) {
+      toast.warn('Максимальная цена товара не должна быть меньше минимальной');
+
+      return;
+    }
+
+    let minUserPrice = '';
+    let maxUserPrice = '';
+
+    if (minPriceInput) {
+      minUserPrice = Number(minPriceInput) < minCatalogPrice ? String(minCatalogPrice) :
+        getClosestMinPrice(Number(minPriceInput), sortedPrices).toString();
+    }
+
+    if (maxPriceInput) {
+      maxUserPrice = Number(maxPriceInput) > maxCatalogPrice ? String(maxCatalogPrice) :
+        getClosestMaxPrice(Number(maxPriceInput), sortedPrices).toString();
+    }
+
+    onPriceChange(minUserPrice, maxUserPrice);
+  };
+
   const handleKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
     if (evt.key === 'Enter') {
       evt.preventDefault();
 
-      if (minPriceInput && maxPriceInput && (Number(maxPriceInput) < Number(minPriceInput))) {
-        toast.warn('Максимальная цена товара не должна быть меньше минимальной');
-
-        return;
-      }
-
-      let minUserPrice = '';
-      let maxUserPrice = '';
-
-      if (minPriceInput) {
-        minUserPrice = Number(minPriceInput) < minCatalogPrice ? String(minCatalogPrice) :
-          getClosestMinPrice(Number(minPriceInput), sortedPrices).toString();
-      }
-
-      if (maxPriceInput) {
-        maxUserPrice = Number(maxPriceInput) > maxCatalogPrice ? String(maxCatalogPrice) :
-          getClosestMaxPrice(Number(maxPriceInput), sortedPrices).toString();
-      }
-
-      onPriceChange(minUserPrice, maxUserPrice);
+      handlePriceChange();
     }
   };
 
-  const handlePriceChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+  const handlePriceInputChange = ({target}: ChangeEvent<HTMLInputElement>) => {
     if (Number(target.value) >= 0) {
       if (target.name === 'price') {
         setMinPriceInput(target.value);
@@ -85,14 +89,14 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
               <div className="custom-input">
                 <label>
                   <input type="number" name="price" placeholder={String(minCatalogPrice)} value={minPriceInput}
-                    onChange={handlePriceChange} onKeyDown={handleKeyDown}
+                    onChange={handlePriceInputChange} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
                   />
                 </label>
               </div>
               <div className="custom-input">
                 <label>
                   <input type="number" name="priceUp" placeholder={String(maxCatalogPrice)} value={maxPriceInput}
-                    onChange={handlePriceChange} onKeyDown={handleKeyDown}
+                    onChange={handlePriceInputChange} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
                   />
                 </label>
               </div>

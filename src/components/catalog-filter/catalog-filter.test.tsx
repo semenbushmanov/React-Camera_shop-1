@@ -101,7 +101,7 @@ describe('Component: CatalogFilter', () => {
       <>
         <ToastContainer />
         <CatalogFilter
-          minPrice={''}
+          minPrice={'100'}
           maxPrice={''}
           sortedPrices={[0, 1]}
           isPhotocamera
@@ -121,7 +121,6 @@ describe('Component: CatalogFilter', () => {
 
     const priceInputs = screen.getAllByRole('spinbutton');
 
-    await userEvent.type(priceInputs[0], '100' );
     await userEvent.type(priceInputs[1], '50' );
     fireEvent.keyDown(priceInputs[0], {key: 'Enter', code: 'Enter', charCode: 13});
 
