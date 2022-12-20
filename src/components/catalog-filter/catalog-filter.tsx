@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 type CatalogFilterProps = {
   minPrice: string;
   maxPrice: string;
-  sortedPrices: number[];
+  sortedOriginalPrices: number[];
+  sortedFilteredPrices: number[];
   isPhotocamera: boolean;
   isVideoCamera: boolean;
   isDigital: boolean;
@@ -22,14 +23,18 @@ type CatalogFilterProps = {
 };
 
 function CatalogFilter(props: CatalogFilterProps): JSX.Element {
-  const { minPrice, maxPrice, sortedPrices, isPhotocamera, isVideoCamera,
+  const { minPrice, maxPrice, sortedOriginalPrices, sortedFilteredPrices, isPhotocamera, isVideoCamera,
     isDigital, isFilm, isSnapshot, isCollection, isNovice, isAmateur, isPro,
     onPriceChange, onFilterChange, onFilterReset } = props;
 
-  const minCatalogPrice = useMemo(() => getMinPrice(sortedPrices), [sortedPrices]);
-  const maxCatalogPrice = useMemo(() => getMaxPrice(sortedPrices), [sortedPrices]);
-  const [ minPriceInput, setMinPriceInput ] = useState(minPrice);
-  const [ maxPriceInput, setMaxPriceInput ] = useState(maxPrice);
+  const minCatalogPrice = useMemo(() => getMinPrice(sortedOriginalPrices), [sortedOriginalPrices]);
+  const maxCatalogPrice = useMemo(() => getMaxPrice(sortedOriginalPrices), [sortedOriginalPrices]);
+  const minFilteredPrice = getMinPrice(sortedFilteredPrices);
+  const maxFilteredPrice = getMaxPrice(sortedFilteredPrices);
+  const initialMinPriceInput = minPrice !== '' && Number(minPrice) < minFilteredPrice ? String(minFilteredPrice) : minPrice;
+  const initialMaxPriceInput = maxPrice !== '' && Number(maxPrice) > maxFilteredPrice ? String(maxFilteredPrice) : maxPrice;
+  const [ minPriceInput, setMinPriceInput ] = useState(initialMinPriceInput);
+  const [ maxPriceInput, setMaxPriceInput ] = useState(initialMaxPriceInput);
 
   const handlePriceChange = () => {
     if (minPriceInput && maxPriceInput && (Number(maxPriceInput) < Number(minPriceInput))) {
@@ -43,12 +48,14 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
 
     if (minPriceInput) {
       minUserPrice = Number(minPriceInput) < minCatalogPrice ? String(minCatalogPrice) :
-        getClosestMinPrice(Number(minPriceInput), sortedPrices).toString();
+        getClosestMinPrice(Number(minPriceInput), sortedOriginalPrices).toString();
+      setMinPriceInput(minUserPrice);
     }
 
     if (maxPriceInput) {
       maxUserPrice = Number(maxPriceInput) > maxCatalogPrice ? String(maxCatalogPrice) :
-        getClosestMaxPrice(Number(maxPriceInput), sortedPrices).toString();
+        getClosestMaxPrice(Number(maxPriceInput), sortedOriginalPrices).toString();
+      setMaxPriceInput(maxUserPrice);
     }
 
     onPriceChange(minUserPrice, maxUserPrice);
@@ -88,14 +95,14 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
             <div className="catalog-filter__price-range">
               <div className="custom-input">
                 <label>
-                  <input type="number" name="price" placeholder={String(minCatalogPrice)} value={minPriceInput}
+                  <input type="number" name="price" placeholder={String(minFilteredPrice)} value={minPriceInput}
                     onChange={handlePriceInputChange} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
                   />
                 </label>
               </div>
               <div className="custom-input">
                 <label>
-                  <input type="number" name="priceUp" placeholder={String(maxCatalogPrice)} value={maxPriceInput}
+                  <input type="number" name="priceUp" placeholder={String(maxFilteredPrice)} value={maxPriceInput}
                     onChange={handlePriceInputChange} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
                   />
                 </label>

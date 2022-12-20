@@ -9,7 +9,8 @@ describe('Component: CatalogFilter', () => {
       <CatalogFilter
         minPrice={'50'}
         maxPrice={'100'}
-        sortedPrices={[0, 1]}
+        sortedOriginalPrices={[30, 50, 100, 150]}
+        sortedFilteredPrices={[30, 50, 100, 150]}
         isPhotocamera
         isVideoCamera={false}
         isDigital={false}
@@ -42,7 +43,8 @@ describe('Component: CatalogFilter', () => {
       <CatalogFilter
         minPrice={'50'}
         maxPrice={'100'}
-        sortedPrices={[0, 1]}
+        sortedOriginalPrices={[30, 50, 100, 150]}
+        sortedFilteredPrices={[30, 50, 100, 150]}
         isPhotocamera
         isVideoCamera={false}
         isDigital={false}
@@ -71,7 +73,8 @@ describe('Component: CatalogFilter', () => {
         <CatalogFilter
           minPrice={''}
           maxPrice={''}
-          sortedPrices={[0, 1]}
+          sortedOriginalPrices={[30, 50, 100, 150]}
+          sortedFilteredPrices={[30, 50, 100, 150]}
           isPhotocamera
           isVideoCamera={false}
           isDigital={false}
@@ -88,7 +91,7 @@ describe('Component: CatalogFilter', () => {
       </>);
 
     const priceInputs = screen.getAllByRole('spinbutton');
-    await userEvent.type(priceInputs[0], '-1' );
+    await userEvent.type(priceInputs[0], '-1');
 
     expect(await screen.findByText('Можно ввести только положительное число')).toBeInTheDocument();
     expect(onPriceChange).not.toBeCalled();
@@ -103,7 +106,8 @@ describe('Component: CatalogFilter', () => {
         <CatalogFilter
           minPrice={'100'}
           maxPrice={''}
-          sortedPrices={[0, 1]}
+          sortedOriginalPrices={[30, 50, 100, 150]}
+          sortedFilteredPrices={[30, 50, 100, 150]}
           isPhotocamera
           isVideoCamera={false}
           isDigital={false}
@@ -135,7 +139,8 @@ describe('Component: CatalogFilter', () => {
       <CatalogFilter
         minPrice={''}
         maxPrice={''}
-        sortedPrices={[0, 1]}
+        sortedOriginalPrices={[30, 50, 100, 150]}
+        sortedFilteredPrices={[30, 50, 100, 150]}
         isPhotocamera
         isVideoCamera={false}
         isDigital={false}

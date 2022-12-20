@@ -30,7 +30,8 @@ function CatalogScreen(): JSX.Element {
   const isPromoLoading = useAppSelector(getPromoLoadingStatus);
   const pagesTotal = Math.ceil(cameras.length / Settings.CardsOnPageNumber);
   const currentPage = page ? Number(page) : Settings.InitialPageNumber;
-  const sortedPrices = useMemo(() => getSortedPrices(originalCameras), [originalCameras]);
+  const sortedOriginalPrices = useMemo(() => getSortedPrices(originalCameras), [originalCameras]);
+  const sortedFilteredPrices = getSortedPrices(cameras);
   const [ isAddItemModalOpen, setAddItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
   const [ searchParams, setSearchParams ] = useSearchParams();
@@ -184,7 +185,8 @@ function CatalogScreen(): JSX.Element {
                 <CatalogFilter
                   minPrice={priceMinParams ?? ''}
                   maxPrice={priceMaxParams ?? ''}
-                  sortedPrices = {sortedPrices}
+                  sortedOriginalPrices={sortedOriginalPrices}
+                  sortedFilteredPrices={sortedFilteredPrices}
                   isPhotocamera={cameraCategoryParams.includes(CameraCategory.Photo)}
                   isVideoCamera={cameraCategoryParams.includes(CameraCategory.Video)}
                   isDigital={cameraTypeParams.includes(CameraType.Digital)}
