@@ -1,6 +1,8 @@
 import ProductCard from '../product-card/product-card';
 import { Settings } from '../../const';
 import { Camera, Cameras } from '../../types/camera';
+import { getBasketItems } from '../../store/basket/selectors';
+import { useAppSelector } from '../../hooks';
 import { memo } from 'react';
 
 type ProductCardsListProps = {
@@ -12,6 +14,7 @@ type ProductCardsListProps = {
 const PAGE_TO_INDEX_DIFFERENCE = 1;
 
 function ProductCardsList({cameras, currentPage, openAddItemModal}: ProductCardsListProps): JSX.Element {
+  const basketItems = useAppSelector(getBasketItems);
   const startingPoint = (currentPage - PAGE_TO_INDEX_DIFFERENCE) * Settings.CardsOnPageNumber;
   const finalPoint = startingPoint + Settings.CardsOnPageNumber;
   const camerasToRender = cameras.slice(startingPoint, finalPoint);
@@ -27,7 +30,7 @@ function ProductCardsList({cameras, currentPage, openAddItemModal}: ProductCards
           <ProductCard
             key={camera.id}
             camera={camera}
-            isInBasket={false}
+            isInBasket={basketItems.includes(camera.id)}
             openAddItemModal={openAddItemModal}
           />)
       )}

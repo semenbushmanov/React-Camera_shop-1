@@ -1,5 +1,7 @@
 import ProductCard from '../product-card/product-card';
 import { Camera, Cameras } from '../../types/camera';
+import { getBasketItems } from '../../store/basket/selectors';
+import { useAppSelector } from '../../hooks';
 import { useState, memo } from 'react';
 import { Settings } from '../../const';
 
@@ -10,6 +12,7 @@ type SimilarProductSliderProps = {
 
 function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
   const { similarCameras, openAddItemModal } = props;
+  const basketItems = useAppSelector(getBasketItems);
   const [ firstCameraToRender, setFirstCameraToRender ] = useState(0);
   const lastCameraToRender = firstCameraToRender + Settings.SimilarCardsNumber;
   const similarCamerasToRender = similarCameras.slice(firstCameraToRender, lastCameraToRender);
@@ -36,7 +39,7 @@ function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
                   <ProductCard
                     key={camera.id}
                     camera={camera}
-                    isInBasket={false}
+                    isInBasket={basketItems.includes(camera.id)}
                     openAddItemModal={openAddItemModal}
                     isActive
                   />)
