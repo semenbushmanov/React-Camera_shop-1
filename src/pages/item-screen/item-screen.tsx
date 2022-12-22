@@ -7,6 +7,7 @@ import BreadCrumbs from '../../components/breadcrumbs/breadcrumbs';
 import AddItemModal from '../../components/add-item-modal/add-item-modal';
 import AddReviewModal from '../../components/add-review-modal/add-review-modal';
 import ReviewSuccessModal from '../../components/review-success-modal/review-success-modal';
+import AddSuccessModal from '../../components/add-success-modal/add-success-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import Tabs from '../../components/tabs/tabs';
@@ -18,7 +19,7 @@ import { useAppSelector } from '../../hooks';
 import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
 import { useFetchSimilarCameras } from '../../hooks/api-hooks/use-fetch-similar-cameras';
 import { useFetchReviews } from '../../hooks/api-hooks/use-fetch-reviews';
-import { getBasketItems } from '../../store/basket/selectors';
+import { getBasketItems, getAddSuccessModalStatus } from '../../store/basket/selectors';
 import { getPostingStatus, getReviewSuccessStatus } from '../../store/cameras-data/selectors';
 import { formatPrice, sortReviewsByDate } from '../../utils/common';
 import { Camera } from '../../types/camera';
@@ -29,6 +30,7 @@ function ItemScreen(): JSX.Element {
   const { id } = useParams();
   const isPosting = useAppSelector(getPostingStatus);
   const reviewSuccessStatus = useAppSelector(getReviewSuccessStatus);
+  const isAddSuccessModalOpen = useAppSelector(getAddSuccessModalStatus);
   const basketItemsCount = useAppSelector(getBasketItems).length;
   const [ camera, status ] = useFetchCamera(id);
   const [ similarCameras ] = useFetchSimilarCameras(id);
@@ -128,6 +130,7 @@ function ItemScreen(): JSX.Element {
         </HashLink>
         {isAddItemModalOpen &&
           <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
+        {isAddSuccessModalOpen && !isAddItemModalOpen && <AddSuccessModal />}
         {isAddReviewModalOpen &&
           <AddReviewModal cameraId={camera.id} closeAddReviewModal={closeAddReviewModal}/>}
         {reviewSuccessStatus && !isAddReviewModalOpen && <ReviewSuccessModal />}

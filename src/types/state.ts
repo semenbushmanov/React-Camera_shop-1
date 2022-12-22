@@ -14,6 +14,7 @@ export type CamerasData = {
 
 export type BasketData = {
   camerasIDs: number[];
+  isAddSuccessModalOpen: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;
