@@ -4,7 +4,11 @@ import { useAppDispatch } from '../../hooks/index';
 import { closeAddSuccessModal } from '../../store/basket/basket';
 import { AppRoute } from '../../const';
 
-function AddSuccessModal(): JSX.Element {
+type AddSuccessModalProps = {
+  isCatalog?: boolean;
+};
+
+function AddSuccessModal({isCatalog}: AddSuccessModalProps): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const firstFocusableElement = useRef<HTMLAnchorElement | null>(null);
@@ -70,7 +74,7 @@ function AddSuccessModal(): JSX.Element {
             <use xlinkHref="#icon-success"></use>
           </svg>
           <div className="modal__buttons">
-            <Link className="btn btn--transparent modal__btn" to={AppRoute.Root}
+            <Link className="btn btn--transparent modal__btn" to={isCatalog ? '' : AppRoute.Root}
               ref={firstFocusableElement} onClick={closeModal}
             >Продолжить покупки
             </Link>

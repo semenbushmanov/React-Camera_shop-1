@@ -6,6 +6,7 @@ import CatalogSorter from '../../components/catalog-sorter/catalog-sorter';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import ProductCardsList from '../../components/product-cards-list/product-cards-list';
 import AddItemModal from '../../components/add-item-modal/add-item-modal';
+import AddSuccessModal from '../../components/add-success-modal/add-success-modal';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { useState, useCallback, useEffect, useMemo, ChangeEvent } from 'react';
@@ -16,7 +17,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { fetchCamerasAction } from '../../store/api-actions';
 import { getOriginalCameras, getCameras, getDataLoadingStatus, getInitialLoadingStatus,
   getPromoLoadingStatus } from '../../store/cameras-data/selectors';
-import { getBasketItems } from '../../store/basket/selectors';
+import { getBasketItems, getAddSuccessModalStatus } from '../../store/basket/selectors';
 import { Camera } from '../../types/camera';
 import { getSortedPrices } from '../../utils/common';
 
@@ -30,6 +31,7 @@ function CatalogScreen(): JSX.Element {
   const isLoading = useAppSelector(getDataLoadingStatus);
   const isPromoLoading = useAppSelector(getPromoLoadingStatus);
   const basketItemsCount = useAppSelector(getBasketItems).length;
+  const isAddSuccessModalOpen = useAppSelector(getAddSuccessModalStatus);
   const pagesTotal = Math.ceil(cameras.length / Settings.CardsOnPageNumber);
   const currentPage = page ? Number(page) : Settings.InitialPageNumber;
   const sortedOriginalPrices = useMemo(() => getSortedPrices(originalCameras), [originalCameras]);
@@ -223,6 +225,7 @@ function CatalogScreen(): JSX.Element {
           </section>
         </div>
         {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
+        {isAddSuccessModalOpen && !isAddItemModalOpen && <AddSuccessModal isCatalog />}
       </main>
       <Footer />
     </div>
