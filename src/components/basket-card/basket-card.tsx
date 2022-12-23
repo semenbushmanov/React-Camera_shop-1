@@ -5,9 +5,10 @@ import { memo } from 'react';
 type BasketCardProps = {
   camera: Camera;
   quantity: number;
+  removeItem: (camera: Camera) => void;
 };
 
-function BasketCard({camera, quantity}: BasketCardProps): JSX.Element {
+function BasketCard({camera, quantity, removeItem}: BasketCardProps): JSX.Element {
   const { name, vendorCode, type, category, level, price,
     previewImg, previewImg2x, previewImgWebp, previewImgWebp2x } = camera;
 
@@ -52,7 +53,9 @@ function BasketCard({camera, quantity}: BasketCardProps): JSX.Element {
       <div className="basket-item__total-price">
         <span className="visually-hidden">Общая цена:</span>{`${formatPrice(price * quantity)} ₽`}
       </div>
-      <button className="cross-btn" type="button" aria-label="Удалить товар">
+      <button className="cross-btn" type="button" aria-label="Удалить товар"
+        onClick={() => removeItem(camera)}
+      >
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>
         </svg>

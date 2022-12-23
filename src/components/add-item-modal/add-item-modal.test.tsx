@@ -18,7 +18,7 @@ describe('Component: AddItemModal', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
-        <AddItemModal camera={mockCamera} closeAddItemModal={jest.fn()}/>
+        <AddItemModal camera={mockCamera} closeModal={jest.fn()}/>
       </Provider>
     );
 
@@ -35,7 +35,7 @@ describe('Component: AddItemModal', () => {
 
     render(
       <Provider store={store}>
-        <AddItemModal camera={mockCamera} closeAddItemModal={mockCallback}/>
+        <AddItemModal camera={mockCamera} closeModal={mockCallback}/>
       </Provider>
     );
 

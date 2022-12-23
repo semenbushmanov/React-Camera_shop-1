@@ -22,7 +22,7 @@ describe('Component: AddReviewModal', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
-        <AddReviewModal cameraId={2} closeAddReviewModal={jest.fn()}/>
+        <AddReviewModal cameraId={2} closeModal={jest.fn()}/>
       </Provider>
     );
 
@@ -39,7 +39,7 @@ describe('Component: AddReviewModal', () => {
 
     render(
       <Provider store={store}>
-        <AddReviewModal cameraId={2} closeAddReviewModal={mockCallback}/>
+        <AddReviewModal cameraId={2} closeModal={mockCallback}/>
       </Provider>
     );
 

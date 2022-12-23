@@ -127,11 +127,9 @@ function ItemScreen(): JSX.Element {
             <use xlinkHref="#icon-arrow2"></use>
           </svg>
         </HashLink>
-        {isAddItemModalOpen &&
-          <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
+        {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeModal={closeAddItemModal}/>}
         {isAddSuccessModalOpen && !isAddItemModalOpen && <AddSuccessModal />}
-        {isAddReviewModalOpen &&
-          <AddReviewModal cameraId={camera.id} closeAddReviewModal={closeAddReviewModal}/>}
+        {isAddReviewModalOpen && <AddReviewModal cameraId={camera.id} closeModal={closeAddReviewModal}/>}
         {reviewSuccessStatus && !isAddReviewModalOpen && <ReviewSuccessModal />}
       </main>
       <Footer />

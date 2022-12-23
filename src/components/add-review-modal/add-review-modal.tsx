@@ -6,10 +6,10 @@ const MIN_COMMENT_LENGTH = 5;
 
 type AddReviewModalProps = {
   cameraId: number;
-  closeAddReviewModal: () => void;
+  closeModal: () => void;
 };
 
-function AddReviewModal({cameraId, closeAddReviewModal}: AddReviewModalProps): JSX.Element {
+function AddReviewModal({cameraId, closeModal}: AddReviewModalProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [ rating, setRating ] = useState(0);
   const [ name, setName ] = useState('');
@@ -95,7 +95,7 @@ function AddReviewModal({cameraId, closeAddReviewModal}: AddReviewModalProps): J
     const handleKeyDown = (evt: KeyboardEvent) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        closeAddReviewModal();
+        closeModal();
       }
 
       if (evt.key === 'Tab') {
@@ -128,10 +128,10 @@ function AddReviewModal({cameraId, closeAddReviewModal}: AddReviewModalProps): J
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'visible';
     };
-  }, [closeAddReviewModal]);
+  }, [closeModal]);
 
   return (
-    <div className="modal is-active" onClick={closeAddReviewModal}>
+    <div className="modal is-active" onClick={closeModal}>
       <div className="modal__wrapper">
         <div className="modal__overlay"></div>
         <div className="modal__content" onClick={(evt) => {evt.stopPropagation();}}>
@@ -235,7 +235,7 @@ function AddReviewModal({cameraId, closeAddReviewModal}: AddReviewModalProps): J
             </form>
           </div>
           <button className="cross-btn" type="button" aria-label="Закрыть попап"
-            onClick={closeAddReviewModal} ref={lastFocusableElement}
+            onClick={closeModal} ref={lastFocusableElement}
           >
             <svg width="10" height="10" aria-hidden="true">
               <use xlinkHref="#icon-close"></use>

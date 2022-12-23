@@ -1,6 +1,8 @@
 import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import BasketCard from '../../components/basket-card/basket-card';
+import RemoveItemModal from '../../components/remove-item-modal/remove-item-modal';
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { getBasketItems } from '../../store/basket/selectors';
@@ -11,7 +13,21 @@ import { Camera } from '../../types/camera';
 function BasketScreen(): JSX.Element {
   const originalCameras = useAppSelector(getOriginalCameras);
   const basketItems = useAppSelector(getBasketItems);
-  const basketCameras = basketItems.map((item) => originalCameras.find((camera) => camera.id === item.id) ?? {} as Camera);
+  const basketCameras = basketItems.map((item) =>
+    originalCameras.find((camera) => camera.id === item.id) ?? {} as Camera);
+  const [ isRemoveItemModalOpen, setRemoveItemModalOpen ] = useState(false);
+  const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
+
+  const openRemoveItemModal = useCallback(
+    (cameraItem: Camera) => {
+      setCurrentCamera(cameraItem);
+      setRemoveItemModalOpen(true);
+    }, []
+  );
+
+  const closeRemoveItemModal = useCallback(
+    () => setRemoveItemModalOpen(false), []
+  );
 
   return (
     <div className="wrapper">
@@ -46,7 +62,7 @@ function BasketScreen(): JSX.Element {
               <h1 className="title title--h2">Корзина</h1>
               <ul className="basket__list">
                 {basketCameras.map((camera) =>
-                  <BasketCard camera={camera} quantity={1} key={camera.id}/>
+                  <BasketCard camera={camera} quantity={1} removeItem={openRemoveItemModal} key={camera.id}/>
                 )}
               </ul>
               <div className="basket__summary">
@@ -77,6 +93,8 @@ function BasketScreen(): JSX.Element {
             </div>
           </section>
         </div>
+        {isRemoveItemModalOpen &&
+          <RemoveItemModal camera={currentCamera} closeModal={closeRemoveItemModal}/>}
       </main>
       <Footer />
     </div>

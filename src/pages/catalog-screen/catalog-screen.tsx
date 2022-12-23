@@ -223,7 +223,7 @@ function CatalogScreen(): JSX.Element {
             </div>
           </section>
         </div>
-        {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeAddItemModal={closeAddItemModal}/>}
+        {isAddItemModalOpen && <AddItemModal camera={currentCamera} closeModal={closeAddItemModal}/>}
         {isAddSuccessModalOpen && !isAddItemModalOpen && <AddSuccessModal isCatalog />}
       </main>
       <Footer />

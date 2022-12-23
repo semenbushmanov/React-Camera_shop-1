@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/index';
 import { closeAddSuccessModal } from '../../store/basket/basket';
@@ -96,4 +96,4 @@ function AddSuccessModal({isCatalog}: AddSuccessModalProps): JSX.Element {
   );
 }
 
-export default memo(AddSuccessModal);
+export default AddSuccessModal;
