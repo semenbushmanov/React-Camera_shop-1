@@ -11,11 +11,17 @@ const mockPromo = makeFakePromo();
 const history = createMemoryHistory();
 
 const store = mockStore({
-  BASKET: {camerasIDs: []},
+  BASKET: {
+    basketItems: [],
+    isAddSuccessModalOpen: false,
+  },
   DATA: {
+    originalCameras: [],
+    isInitialLoading: false,
     cameras: [],
     isDataLoading:false,
     promo: mockPromo,
+    isPromoLoading: false,
     isPosting: false,
     reviewSuccess: false,
   },

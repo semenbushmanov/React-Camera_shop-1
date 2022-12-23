@@ -15,7 +15,10 @@ const mockStore = configureMockStore([thunk]);
 const mockAPI = new MockAdapter(api);
 
 const store = mockStore({
-  BASKET: {camerasIDs: []},
+  BASKET: {
+    basketItems: [],
+    isAddSuccessModalOpen: false,
+  },
   DATA: {
     originalCameras: [],
     isInitialLoading: false,

@@ -4,20 +4,20 @@ describe('Reducer: basket', () => {
   it('should return initial state without additional parameters', () => {
     expect(basket.reducer(void 0, {type: 'UNKNOWN_ACTION'}))
       .toEqual({
-        camerasIDs: [],
+        basketItems: [],
         isAddSuccessModalOpen: false,
       });
   });
 
-  it('should update camerasIDs by adding id', () => {
+  it('should update basketItems by adding item id and quantity', () => {
     const state = {
-      camerasIDs: [],
+      basketItems: [],
       isAddSuccessModalOpen: false,
     };
 
     expect(basket.reducer(state, addItem(5)))
       .toEqual({
-        camerasIDs: [5],
+        basketItems: [{id: 5, quantity: 1}],
         isAddSuccessModalOpen: true,
       });
   });

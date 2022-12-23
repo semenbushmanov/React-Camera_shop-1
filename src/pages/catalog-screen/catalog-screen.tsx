@@ -17,7 +17,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { fetchCamerasAction } from '../../store/api-actions';
 import { getOriginalCameras, getCameras, getDataLoadingStatus, getInitialLoadingStatus,
   getPromoLoadingStatus } from '../../store/cameras-data/selectors';
-import { getBasketItems, getAddSuccessModalStatus } from '../../store/basket/selectors';
+import { getAddSuccessModalStatus } from '../../store/basket/selectors';
 import { Camera } from '../../types/camera';
 import { getSortedPrices } from '../../utils/common';
 
@@ -30,7 +30,6 @@ function CatalogScreen(): JSX.Element {
   const isInitialLoading = useAppSelector(getInitialLoadingStatus);
   const isLoading = useAppSelector(getDataLoadingStatus);
   const isPromoLoading = useAppSelector(getPromoLoadingStatus);
-  const basketItemsCount = useAppSelector(getBasketItems).length;
   const isAddSuccessModalOpen = useAppSelector(getAddSuccessModalStatus);
   const pagesTotal = Math.ceil(cameras.length / Settings.CardsOnPageNumber);
   const currentPage = page ? Number(page) : Settings.InitialPageNumber;
@@ -162,7 +161,7 @@ function CatalogScreen(): JSX.Element {
 
   return (
     <div className="wrapper">
-      <Header basketItemsCount={basketItemsCount}/>
+      <Header />
       <main>
         <Banner />
         <div className="page-content">

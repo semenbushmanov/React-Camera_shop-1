@@ -2,15 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useState, ChangeEvent, useEffect, useCallback } from 'react';
 import { useFetchCameraSearch } from '../../hooks/api-hooks/use-fetch-camera-search';
+import { getBasketItems } from '../../store/basket/selectors';
+import { useAppSelector } from '../../hooks';
 import FormSearchList from '../form-search-list/form-search-list';
 
-type HeaderProps = {
-  basketItemsCount?: number;
-};
-
-function Header({basketItemsCount}: HeaderProps): JSX.Element {
+function Header(): JSX.Element {
   const navigate = useNavigate();
-  const isBasketCountVisible = basketItemsCount ? basketItemsCount !== 0 : false;
+  const basketItems = useAppSelector(getBasketItems);
+  const basketItemsQuantity = basketItems.length === 0 ? 0 :
+    basketItems.map((item) => item.quantity)
+      .reduce((accumulator, currentQuantity) => accumulator + currentQuantity);
   const [ isSearchListOpen, setSearchListOpen ] = useState(false);
   const [ searchInput, setSearchInput ] = useState('');
   const [ cameras ] = useFetchCameraSearch(searchInput);
@@ -79,7 +80,9 @@ function Header({basketItemsCount}: HeaderProps): JSX.Element {
         <Link className="header__basket-link" to={AppRoute.Basket}>
           <svg width="16" height="16" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg>{isBasketCountVisible && <span className="header__basket-count">{basketItemsCount}</span>}
+          </svg>
+          {basketItemsQuantity !== 0 &&
+            <span className="header__basket-count">{basketItemsQuantity}</span>}
         </Link>
       </div>
     </header>

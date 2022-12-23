@@ -11,12 +11,11 @@ import { Camera } from '../../types/camera';
 function BasketScreen(): JSX.Element {
   const originalCameras = useAppSelector(getOriginalCameras);
   const basketItems = useAppSelector(getBasketItems);
-  const basketItemsCount = basketItems.length;
-  const basketCameras = basketItems.map((id) => originalCameras.find((camera) => camera.id === id) ?? {} as Camera);
+  const basketCameras = basketItems.map((item) => originalCameras.find((camera) => camera.id === item.id) ?? {} as Camera);
 
   return (
     <div className="wrapper">
-      <Header basketItemsCount={basketItemsCount}/>
+      <Header />
       <main>
         <div className="page-content">
           <div className="breadcrumbs">

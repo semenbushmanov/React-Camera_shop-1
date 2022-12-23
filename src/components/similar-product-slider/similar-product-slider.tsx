@@ -13,6 +13,7 @@ type SimilarProductSliderProps = {
 function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
   const { similarCameras, openAddItemModal } = props;
   const basketItems = useAppSelector(getBasketItems);
+  const basketItemsIDs = basketItems.map((item) => item.id);
   const [ firstCameraToRender, setFirstCameraToRender ] = useState(0);
   const lastCameraToRender = firstCameraToRender + Settings.SimilarCardsNumber;
   const similarCamerasToRender = similarCameras.slice(firstCameraToRender, lastCameraToRender);
@@ -39,7 +40,7 @@ function SimilarProductSlider(props: SimilarProductSliderProps): JSX.Element {
                   <ProductCard
                     key={camera.id}
                     camera={camera}
-                    isInBasket={basketItems.includes(camera.id)}
+                    isInBasket={basketItemsIDs.includes(camera.id)}
                     openAddItemModal={openAddItemModal}
                     isActive
                   />)

@@ -23,10 +23,12 @@ function BasketCard({camera, quantity}: BasketCardProps): JSX.Element {
         <p className="basket-item__title">{name}</p>
         <ul className="basket-item__list">
           <li className="basket-item__list-item">
-            <span className="basket-item__article">Артикул:</span>
+            <span className="basket-item__article">Артикул: </span>
             <span className="basket-item__number">{vendorCode}</span>
           </li>
-          <li className="basket-item__list-item">{`${type} ${category.toLowerCase()}`}</li>
+          <li className="basket-item__list-item">
+            {`${type} ${category === 'Фотоаппарат' ? 'фотокамера' : 'видеокамера'}`}
+          </li>
           <li className="basket-item__list-item">{`${level} уровень`}</li>
         </ul>
       </div>

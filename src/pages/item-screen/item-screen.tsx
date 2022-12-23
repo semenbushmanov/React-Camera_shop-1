@@ -19,7 +19,7 @@ import { useAppSelector } from '../../hooks';
 import { useFetchCamera } from '../../hooks/api-hooks/use-fetch-camera';
 import { useFetchSimilarCameras } from '../../hooks/api-hooks/use-fetch-similar-cameras';
 import { useFetchReviews } from '../../hooks/api-hooks/use-fetch-reviews';
-import { getBasketItems, getAddSuccessModalStatus } from '../../store/basket/selectors';
+import { getAddSuccessModalStatus } from '../../store/basket/selectors';
 import { getPostingStatus, getReviewSuccessStatus } from '../../store/cameras-data/selectors';
 import { formatPrice, sortReviewsByDate } from '../../utils/common';
 import { Camera } from '../../types/camera';
@@ -31,7 +31,6 @@ function ItemScreen(): JSX.Element {
   const isPosting = useAppSelector(getPostingStatus);
   const reviewSuccessStatus = useAppSelector(getReviewSuccessStatus);
   const isAddSuccessModalOpen = useAppSelector(getAddSuccessModalStatus);
-  const basketItemsCount = useAppSelector(getBasketItems).length;
   const [ camera, status ] = useFetchCamera(id);
   const [ similarCameras ] = useFetchSimilarCameras(id);
   const [ reviews ] = useFetchReviews(id, reviewSuccessStatus);
@@ -85,7 +84,7 @@ function ItemScreen(): JSX.Element {
 
   return (
     <div className="wrapper">
-      <Header basketItemsCount={basketItemsCount}/>
+      <Header />
       <main>
         <div className="page-content">
           <BreadCrumbs item={name}/>
