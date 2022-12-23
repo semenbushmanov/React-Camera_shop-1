@@ -76,4 +76,6 @@ export enum Settings {
   InitialPageNumber = 1,
   SimilarCardsNumber = 3,
   SliderStep = 1,
+  MaxItemQuantity = 99,
+  MinItemQuantity = 1,
 }

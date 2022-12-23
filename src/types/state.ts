@@ -1,5 +1,5 @@
 import { store } from '../store/index';
-import { Cameras, Promo } from './camera';
+import { Cameras, Promo, BasketItem } from './camera';
 
 export type CamerasData = {
   originalCameras: Cameras;
@@ -13,7 +13,7 @@ export type CamerasData = {
 };
 
 export type BasketData = {
-  camerasIDs: number[];
+  basketItems: BasketItem[];
   isAddSuccessModalOpen: boolean;
 };
 
