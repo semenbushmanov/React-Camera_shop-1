@@ -69,7 +69,7 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
     }
   };
 
-  const handlePriceInputChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+  const handlePriceInput = ({target}: ChangeEvent<HTMLInputElement>) => {
     if (Number(target.value) >= 0) {
       if (target.name === 'price') {
         setMinPriceInput(target.value);
@@ -96,14 +96,14 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
               <div className="custom-input">
                 <label>
                   <input type="number" name="price" placeholder={String(minFilteredPrice)} value={minPriceInput}
-                    onChange={handlePriceInputChange} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
+                    onChange={handlePriceInput} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
                   />
                 </label>
               </div>
               <div className="custom-input">
                 <label>
                   <input type="number" name="priceUp" placeholder={String(maxFilteredPrice)} value={maxPriceInput}
-                    onChange={handlePriceInputChange} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
+                    onChange={handlePriceInput} onKeyDown={handleKeyDown} onBlur={handlePriceChange}
                   />
                 </label>
               </div>

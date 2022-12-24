@@ -1,6 +1,10 @@
+import { memo, ChangeEvent, KeyboardEvent, useState, useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/index';
+import { incrementQuantity, decrementQuantity, setQuantity } from '../../store/basket/basket';
 import { Camera } from '../../types/camera';
 import { formatPrice } from '../../utils/common';
-import { memo } from 'react';
+import { Settings } from '../../const';
+import { toast } from 'react-toastify';
 
 type BasketCardProps = {
   camera: Camera;
@@ -9,8 +13,63 @@ type BasketCardProps = {
 };
 
 function BasketCard({camera, quantity, removeItem}: BasketCardProps): JSX.Element {
-  const { name, vendorCode, type, category, level, price,
+  const { id, name, vendorCode, type, category, level, price,
     previewImg, previewImg2x, previewImgWebp, previewImgWebp2x } = camera;
+
+  const dispatch = useAppDispatch();
+  const [ currentQuantity, setCurrentQuantity ] = useState<number | ''>(quantity);
+
+  useEffect(() => {
+    setCurrentQuantity(quantity);
+  }, [quantity]);
+
+  const handleQuantityInput = ({target}: ChangeEvent<HTMLInputElement>) => {
+    if (target.value === '') {
+      setCurrentQuantity('');
+
+      return;
+    }
+
+    if (Number(target.value) > 0) {
+      const itemQuantity = Math.round(Number(target.value));
+
+      if (itemQuantity < Settings.MinItemQuantity) {
+        setCurrentQuantity(Settings.MinItemQuantity);
+
+        return;
+      }
+
+      if (itemQuantity > Settings.MaxItemQuantity) {
+        setCurrentQuantity(Settings.MaxItemQuantity);
+        toast.warn(`Максимальное количество - ${Settings.MaxItemQuantity} штук`);
+
+        return;
+      }
+
+      setCurrentQuantity(itemQuantity);
+      return;
+    }
+
+    toast.warn('Можно ввести только целое положительное число');
+  };
+
+  const handleQuantityChange = () => {
+    if (currentQuantity) {
+      dispatch(setQuantity({id: id, quantity: currentQuantity}));
+
+      return;
+    }
+
+    setCurrentQuantity(quantity);
+  };
+
+  const handleKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+    if (evt.key === 'Enter') {
+      evt.preventDefault();
+
+      handleQuantityChange();
+    }
+  };
 
   return (
     <li className="basket-item">
@@ -37,14 +96,21 @@ function BasketCard({camera, quantity, removeItem}: BasketCardProps): JSX.Elemen
         {`${formatPrice(price)} ₽`}
       </p>
       <div className="quantity">
-        <button className="btn-icon btn-icon--prev" aria-label="уменьшить количество товара">
+        <button className="btn-icon btn-icon--prev" aria-label="уменьшить количество товара"
+          onClick={() => dispatch(decrementQuantity(id))} disabled={quantity === Settings.MinItemQuantity}
+        >
           <svg width="7" height="12" aria-hidden="true">
             <use xlinkHref="#icon-arrow"></use>
           </svg>
         </button>
-        <label className="visually-hidden" htmlFor="counter1"></label>
-        <input type="number" id="counter1" readOnly value={quantity} min="1" max="99" aria-label="количество товара"/>
-        <button className="btn-icon btn-icon--next" aria-label="увеличить количество товара">
+        <label className="visually-hidden" htmlFor={`counter${id}`}></label>
+        <input type="number" id={`counter${id}`} min="1" max="99" aria-label="количество товара"
+          value={currentQuantity} onChange={handleQuantityInput} onBlur={handleQuantityChange}
+          onKeyDown={handleKeyDown}
+        />
+        <button className="btn-icon btn-icon--next" aria-label="увеличить количество товара"
+          onClick={() => dispatch(incrementQuantity(id))} disabled={quantity === Settings.MaxItemQuantity}
+        >
           <svg width="7" height="12" aria-hidden="true">
             <use xlinkHref="#icon-arrow"></use>
           </svg>

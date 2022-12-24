@@ -36,18 +36,14 @@ export const basket = createSlice({
       const itemInBasket = state.basketItems.find((item) => item.id === action.payload);
 
       if (itemInBasket) {
-        if (itemInBasket.quantity < Settings.MaxItemQuantity) {
-          itemInBasket.quantity++;
-        }
+        itemInBasket.quantity++;
       }
     },
     decrementQuantity: (state, action: PayloadAction<number>) => {
       const itemInBasket = state.basketItems.find((item) => item.id === action.payload);
 
       if (itemInBasket) {
-        if (itemInBasket.quantity > Settings.MinItemQuantity) {
-          itemInBasket.quantity--;
-        }
+        itemInBasket.quantity--;
       }
     },
     setQuantity: (state, action: PayloadAction<BasketItem>) => {

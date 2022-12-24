@@ -12,6 +12,7 @@ type AddItemModalProps = {
 function AddItemModal({camera, closeModal}: AddItemModalProps): JSX.Element {
   const { id, name, vendorCode, type, category, level, price,
     previewImg, previewImg2x, previewImgWebp, previewImgWebp2x } = camera;
+
   const dispatch = useAppDispatch();
   const [ isAddButtonFocused, setAddButtonFocused ] = useState(false);
   const addItemButton = useRef<HTMLButtonElement | null>(null);

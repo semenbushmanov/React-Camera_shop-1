@@ -12,6 +12,7 @@ type RemoveItemModalProps = {
 function RemoveItemModal({camera, closeModal}: RemoveItemModalProps): JSX.Element {
   const { id, name, vendorCode, type, category, level,
     previewImg, previewImg2x, previewImgWebp, previewImgWebp2x } = camera;
+
   const dispatch = useAppDispatch();
   const firstFocusableElement = useRef<HTMLAnchorElement | null>(null);
   const lastFocusableElement = useRef<HTMLButtonElement | null>(null);
