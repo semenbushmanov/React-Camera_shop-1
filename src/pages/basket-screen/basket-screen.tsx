@@ -9,6 +9,7 @@ import { getBasketItems } from '../../store/basket/selectors';
 import { getOriginalCameras } from '../../store/cameras-data/selectors';
 import { useAppSelector } from '../../hooks';
 import { BasketItemData, Camera } from '../../types/camera';
+import { formatPrice } from '../../utils/common';
 
 function BasketScreen(): JSX.Element {
   const originalCameras = useAppSelector(getOriginalCameras);
@@ -16,7 +17,7 @@ function BasketScreen(): JSX.Element {
   const [ isRemoveItemModalOpen, setRemoveItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
 
-  const basketCameras = basketItems.map((item) => {
+  const basketData = basketItems.map((item) => {
     const basketCamera = originalCameras.find((camera) => camera.id === item.id);
     let basketItemData = {} as BasketItemData;
 
@@ -29,6 +30,10 @@ function BasketScreen(): JSX.Element {
 
     return basketItemData;
   });
+
+  const totalPrice = basketItems.length === 0 ? 0 :
+    basketData.map((item) => item.camera.price * item.quantity)
+      .reduce((accumulator, currentSum) => accumulator + currentSum);
 
   const openRemoveItemModal = useCallback(
     (cameraItem: Camera) => {
@@ -73,15 +78,17 @@ function BasketScreen(): JSX.Element {
             <div className="container">
               <h1 className="title title--h2">Корзина</h1>
               <ul className="basket__list">
-                {basketCameras.map((data) => (
-                  <BasketCard camera={data.camera} quantity={data.quantity}
-                    removeItem={openRemoveItemModal} key={data.camera.id}
+                {basketData.map((item) => (
+                  <BasketCard camera={item.camera} quantity={item.quantity}
+                    removeItem={openRemoveItemModal} key={item.camera.id}
                   />)
                 )}
               </ul>
               <div className="basket__summary">
                 <div className="basket__promo">
-                  <p className="title title--h4">Если у вас есть промокод на скидку, примените его в этом поле</p>
+                  <p className="title title--h4">
+                    Если у вас есть промокод на скидку, примените его в этом поле
+                  </p>
                   <div className="basket-form">
                     <form action="#">
                       <div className="custom-input">
@@ -97,9 +104,18 @@ function BasketScreen(): JSX.Element {
                   </div>
                 </div>
                 <div className="basket__summary-order">
-                  <p className="basket__summary-item"><span className="basket__summary-text">Всего:</span><span className="basket__summary-value">111 390 ₽</span></p>
-                  <p className="basket__summary-item"><span className="basket__summary-text">Скидка:</span><span className="basket__summary-value basket__summary-value--bonus">0 ₽</span></p>
-                  <p className="basket__summary-item"><span className="basket__summary-text basket__summary-text--total">К оплате:</span><span className="basket__summary-value basket__summary-value--total">111 390 ₽</span></p>
+                  <p className="basket__summary-item">
+                    <span className="basket__summary-text">Всего:</span>
+                    <span className="basket__summary-value">{`${formatPrice(totalPrice)} ₽`}</span>
+                  </p>
+                  <p className="basket__summary-item">
+                    <span className="basket__summary-text">Скидка:</span>
+                    <span className="basket__summary-value basket__summary-value--bonus">0 ₽</span>
+                  </p>
+                  <p className="basket__summary-item">
+                    <span className="basket__summary-text basket__summary-text--total">К оплате:</span>
+                    <span className="basket__summary-value basket__summary-value--total">111 390 ₽</span>
+                  </p>
                   <button className="btn btn--purple" type="submit">Оформить заказ
                   </button>
                 </div>
