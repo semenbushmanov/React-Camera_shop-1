@@ -8,15 +8,27 @@ import { AppRoute } from '../../const';
 import { getBasketItems } from '../../store/basket/selectors';
 import { getOriginalCameras } from '../../store/cameras-data/selectors';
 import { useAppSelector } from '../../hooks';
-import { Camera } from '../../types/camera';
+import { BasketItemData, Camera } from '../../types/camera';
 
 function BasketScreen(): JSX.Element {
   const originalCameras = useAppSelector(getOriginalCameras);
   const basketItems = useAppSelector(getBasketItems);
-  const basketCameras = basketItems.map((item) =>
-    originalCameras.find((camera) => camera.id === item.id) ?? {} as Camera);
   const [ isRemoveItemModalOpen, setRemoveItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
+
+  const basketCameras = basketItems.map((item) => {
+    const basketCamera = originalCameras.find((camera) => camera.id === item.id);
+    let basketItemData = {} as BasketItemData;
+
+    if (basketCamera) {
+      basketItemData = {
+        camera: basketCamera,
+        quantity: item.quantity,
+      };
+    }
+
+    return basketItemData;
+  });
 
   const openRemoveItemModal = useCallback(
     (cameraItem: Camera) => {
@@ -61,8 +73,10 @@ function BasketScreen(): JSX.Element {
             <div className="container">
               <h1 className="title title--h2">Корзина</h1>
               <ul className="basket__list">
-                {basketCameras.map((camera) =>
-                  <BasketCard camera={camera} quantity={1} removeItem={openRemoveItemModal} key={camera.id}/>
+                {basketCameras.map((data) => (
+                  <BasketCard camera={data.camera} quantity={data.quantity}
+                    removeItem={openRemoveItemModal} key={data.camera.id}
+                  />)
                 )}
               </ul>
               <div className="basket__summary">

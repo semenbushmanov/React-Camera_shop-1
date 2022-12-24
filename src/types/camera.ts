@@ -61,3 +61,8 @@ export type BasketItem = {
   id: number;
   quantity: number;
 };
+
+export type BasketItemData = {
+  camera: Camera;
+  quantity: number;
+};
