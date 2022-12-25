@@ -61,6 +61,6 @@ export const postCouponAction = createAsyncThunk<Coupon, CouponPost, {
   'data/postCoupon',
   async (couponPost, {dispatch, extra: api}) => {
     const {data} = await api.post<number>(APIRoute.Coupons, couponPost);
-    return { coupon: couponPost.coupon, discount: data};
+    return { coupon: couponPost.coupon, discount: data };
   },
 );

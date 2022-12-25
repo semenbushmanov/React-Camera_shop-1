@@ -2,21 +2,31 @@ import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
 import BasketCard from '../../components/basket-card/basket-card';
 import RemoveItemModal from '../../components/remove-item-modal/remove-item-modal';
-import { useState, useCallback } from 'react';
+import LoadingScreen from '../loading-screen/loading-screen';
+import { useState, useCallback, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { getBasketItems } from '../../store/basket/selectors';
+import { getBasketItems, getPostingStatus, getCouponErrorStatus,
+  getCoupon, getDiscount } from '../../store/basket/selectors';
 import { getOriginalCameras } from '../../store/cameras-data/selectors';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { postCouponAction } from '../../store/api-actions';
+import { resetCoupon } from '../../store/basket/basket';
 import { Camera } from '../../types/camera';
 import { BasketItemData } from '../../types/basket';
 import { formatPrice } from '../../utils/common';
 
 function BasketScreen(): JSX.Element {
+  const dispatch = useAppDispatch();
   const originalCameras = useAppSelector(getOriginalCameras);
   const basketItems = useAppSelector(getBasketItems);
+  const isPosting = useAppSelector(getPostingStatus);
+  const couponError = useAppSelector(getCouponErrorStatus);
+  const coupon = useAppSelector(getCoupon);
+  const discount = useAppSelector(getDiscount);
   const [ isRemoveItemModalOpen, setRemoveItemModalOpen ] = useState(false);
   const [ currentCamera, setCurrentCamera ] = useState({} as Camera);
+  const [ couponInput, setCouponInput ] = useState('');
 
   const basketData = basketItems.map((item) => {
     const basketCamera = originalCameras.find((camera) => camera.id === item.id);
@@ -36,6 +46,9 @@ function BasketScreen(): JSX.Element {
     basketData.map((item) => item.camera.price * item.quantity)
       .reduce((accumulator, currentSum) => accumulator + currentSum);
 
+  const discountSum = Math.round(totalPrice / 100 * discount);
+  const totalPriceWithDiscount = totalPrice - discountSum;
+
   const openRemoveItemModal = useCallback(
     (cameraItem: Camera) => {
       setCurrentCamera(cameraItem);
@@ -46,6 +59,38 @@ function BasketScreen(): JSX.Element {
   const closeRemoveItemModal = useCallback(
     () => setRemoveItemModalOpen(false), []
   );
+
+  const handleCouponChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    if (couponError) {
+      dispatch(resetCoupon());
+    }
+
+    setCouponInput(target.value.replaceAll(' ', ''));
+  };
+
+  const handleCouponSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if (couponInput) {
+      dispatch(postCouponAction({coupon: couponInput}));
+    }
+  };
+
+  const getCouponFieldClassName = () => {
+    if (couponError) {
+      return 'custom-input is-invalid';
+    }
+
+    if (coupon && couponInput === coupon) {
+      return 'custom-input is-valid';
+    }
+
+    return 'custom-input';
+  };
+
+  if (isPosting) {
+    return (<LoadingScreen />);
+  }
 
   return (
     <div className="wrapper">
@@ -91,10 +136,12 @@ function BasketScreen(): JSX.Element {
                     Если у вас есть промокод на скидку, примените его в этом поле
                   </p>
                   <div className="basket-form">
-                    <form action="#">
-                      <div className="custom-input">
+                    <form action="#" onSubmit={handleCouponSubmit}>
+                      <div className={getCouponFieldClassName()}>
                         <label><span className="custom-input__label">Промокод</span>
-                          <input type="text" name="promo" placeholder="Введите промокод"/>
+                          <input type="text" name="promo" placeholder="Введите промокод"
+                            value={couponInput} onChange={handleCouponChange}
+                          />
                         </label>
                         <p className="custom-input__error">Промокод неверный</p>
                         <p className="custom-input__success">Промокод принят!</p>
@@ -111,11 +158,15 @@ function BasketScreen(): JSX.Element {
                   </p>
                   <p className="basket__summary-item">
                     <span className="basket__summary-text">Скидка:</span>
-                    <span className="basket__summary-value basket__summary-value--bonus">0 ₽</span>
+                    <span className="basket__summary-value basket__summary-value--bonus">
+                      {`${formatPrice(discountSum)} ₽`}
+                    </span>
                   </p>
                   <p className="basket__summary-item">
                     <span className="basket__summary-text basket__summary-text--total">К оплате:</span>
-                    <span className="basket__summary-value basket__summary-value--total">111 390 ₽</span>
+                    <span className="basket__summary-value basket__summary-value--total">
+                      {`${formatPrice(totalPriceWithDiscount)} ₽`}
+                    </span>
                   </p>
                   <button className="btn btn--purple" type="submit">Оформить заказ
                   </button>

@@ -62,6 +62,9 @@ export const basket = createSlice({
       const updatedBasketItems = state.basketItems.filter((item) => item.id !== action.payload);
       state.basketItems = updatedBasketItems;
     },
+    resetCoupon: (state) => {
+      state.invalidCoupon = false;
+    },
   },
   extraReducers(builder) {
     builder
@@ -76,9 +79,11 @@ export const basket = createSlice({
       .addCase(postCouponAction.rejected, (state) => {
         state.isPosting = false;
         state.invalidCoupon = true;
+        state.coupon = null;
+        state.discount = 0;
       });
   }
 });
 
 export const { addItem, closeAddSuccessModal, incrementQuantity, decrementQuantity,
-  setQuantity, removeItem } = basket.actions;
+  setQuantity, removeItem, resetCoupon } = basket.actions;
