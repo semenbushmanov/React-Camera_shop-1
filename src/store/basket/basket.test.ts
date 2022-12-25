@@ -6,6 +6,10 @@ describe('Reducer: basket', () => {
       .toEqual({
         basketItems: [],
         isAddSuccessModalOpen: false,
+        isPosting: false,
+        invalidCoupon: false,
+        coupon: null,
+        discount: 0,
       });
   });
 
@@ -13,12 +17,20 @@ describe('Reducer: basket', () => {
     const state = {
       basketItems: [],
       isAddSuccessModalOpen: false,
+      isPosting: false,
+      invalidCoupon: false,
+      coupon: null,
+      discount: 0,
     };
 
     expect(basket.reducer(state, addItem(5)))
       .toEqual({
         basketItems: [{id: 5, quantity: 1}],
         isAddSuccessModalOpen: true,
+        isPosting: false,
+        invalidCoupon: false,
+        coupon: null,
+        discount: 0,
       });
   });
 });

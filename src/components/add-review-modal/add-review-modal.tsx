@@ -86,7 +86,7 @@ function AddReviewModal({cameraId, closeModal}: AddReviewModalProps): JSX.Elemen
       review: comment,
     };
 
-    dispatch(postReviewAction({review: reviewPost}));
+    dispatch(postReviewAction(reviewPost));
   };
 
   useEffect(() => {

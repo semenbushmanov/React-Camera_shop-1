@@ -80,7 +80,7 @@ describe('Async actions', () => {
 
     const store = mockStore();
 
-    await store.dispatch(postReviewAction({review: mockReviewPost}));
+    await store.dispatch(postReviewAction(mockReviewPost));
 
     const actions = store.getActions().map(({type}) => type as string);
 

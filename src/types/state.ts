@@ -1,5 +1,6 @@
 import { store } from '../store/index';
-import { Cameras, Promo, BasketItem } from './camera';
+import { Cameras, Promo } from './camera';
+import { BasketItem } from './basket';
 
 export type CamerasData = {
   originalCameras: Cameras;
@@ -15,6 +16,10 @@ export type CamerasData = {
 export type BasketData = {
   basketItems: BasketItem[];
   isAddSuccessModalOpen: boolean;
+  isPosting: boolean;
+  invalidCoupon: boolean;
+  coupon: string | null;
+  discount: number;
 };
 
 export type State = ReturnType<typeof store.getState>;

@@ -1,5 +1,5 @@
 import { NameSpace } from '../../const';
-import { BasketItem } from '../../types/camera';
+import { BasketItem } from '../../types/basket';
 import { State } from '../../types/state';
 
 export const getBasketItems = (state: State): BasketItem[] => state[NameSpace.Basket].basketItems;

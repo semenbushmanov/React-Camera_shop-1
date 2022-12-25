@@ -1,12 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { postCouponAction } from '../api-actions';
 import { NameSpace, Settings } from '../../const';
 import { BasketData } from '../../types/state';
-import { BasketItem } from '../../types/camera';
+import { BasketItem } from '../../types/basket';
 
 const initialState: BasketData = {
   basketItems: [],
   isAddSuccessModalOpen: false,
+  isPosting: false,
+  invalidCoupon: false,
+  coupon: null,
+  discount: 0,
 };
 
 export const basket = createSlice({
@@ -58,6 +63,21 @@ export const basket = createSlice({
       state.basketItems = updatedBasketItems;
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(postCouponAction.pending, (state) => {
+        state.isPosting = true;
+      })
+      .addCase(postCouponAction.fulfilled, (state, action) => {
+        state.coupon = action.payload.coupon;
+        state.discount = action.payload.discount;
+        state.isPosting = false;
+      })
+      .addCase(postCouponAction.rejected, (state) => {
+        state.isPosting = false;
+        state.invalidCoupon = true;
+      });
+  }
 });
 
 export const { addItem, closeAddSuccessModal, incrementQuantity, decrementQuantity,

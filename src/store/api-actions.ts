@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { Cameras, Promo, ReviewPost } from '../types/camera';
+import { Coupon, CouponPost } from '../types/basket';
 import { APIRoute } from '../const';
 
 export const fetchOriginalCamerasAction = createAsyncThunk<Cameras, undefined, {
@@ -41,13 +42,25 @@ export const fetchPromoAction = createAsyncThunk<Promo, undefined, {
   },
 );
 
-export const postReviewAction = createAsyncThunk<void, {review: ReviewPost}, {
+export const postReviewAction = createAsyncThunk<void, ReviewPost, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/postReview',
-  async ({review}, {dispatch, extra: api}) => {
+  async (review, {dispatch, extra: api}) => {
     await api.post(APIRoute.Reviews, review);
+  },
+);
+
+export const postCouponAction = createAsyncThunk<Coupon, CouponPost, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/postCoupon',
+  async (couponPost, {dispatch, extra: api}) => {
+    const {data} = await api.post<number>(APIRoute.Coupons, couponPost);
+    return { coupon: couponPost.coupon, discount: data};
   },
 );

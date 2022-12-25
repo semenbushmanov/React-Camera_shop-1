@@ -8,7 +8,8 @@ import { AppRoute } from '../../const';
 import { getBasketItems } from '../../store/basket/selectors';
 import { getOriginalCameras } from '../../store/cameras-data/selectors';
 import { useAppSelector } from '../../hooks';
-import { BasketItemData, Camera } from '../../types/camera';
+import { Camera } from '../../types/camera';
+import { BasketItemData } from '../../types/basket';
 import { formatPrice } from '../../utils/common';
 
 function BasketScreen(): JSX.Element {

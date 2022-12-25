@@ -31,10 +31,14 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
   const maxCatalogPrice = useMemo(() => getMaxPrice(sortedOriginalPrices), [sortedOriginalPrices]);
   const minFilteredPrice = getMinPrice(sortedFilteredPrices);
   const maxFilteredPrice = getMaxPrice(sortedFilteredPrices);
-  const initialMinPriceInput = minPrice !== '' && Number(minPrice) < minFilteredPrice ? String(minFilteredPrice) : minPrice;
-  const initialMaxPriceInput = maxPrice !== '' && Number(maxPrice) > maxFilteredPrice ? String(maxFilteredPrice) : maxPrice;
+  const initialMinPriceInput = minPrice !== '' && Number(minPrice) < minFilteredPrice ?
+    String(minFilteredPrice) : minPrice;
+  const initialMaxPriceInput = maxPrice !== '' && Number(maxPrice) > maxFilteredPrice ?
+    String(maxFilteredPrice) : maxPrice;
   const [ minPriceInput, setMinPriceInput ] = useState(initialMinPriceInput);
   const [ maxPriceInput, setMaxPriceInput ] = useState(initialMaxPriceInput);
+  const isFilterResetButtonActive = minPrice !== '' || maxPrice !== '' || isPhotocamera || isVideoCamera ||
+    isDigital || isFilm || isSnapshot || isCollection || isNovice || isAmateur || isPro;
 
   const handlePriceChange = () => {
     if (minPriceInput && maxPriceInput && (Number(maxPriceInput) < Number(minPriceInput))) {
@@ -143,8 +147,8 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
             </div>
             <div className="custom-checkbox catalog-filter__item">
               <label>
-                <input type="checkbox" name="film" disabled={isVideoCamera && !isPhotocamera} checked={isFilm}
-                  value={CameraType.Film} onChange={onFilterChange}
+                <input type="checkbox" name="film" disabled={isVideoCamera && !isPhotocamera}
+                  checked={isFilm} value={CameraType.Film} onChange={onFilterChange}
                 />
                 <span className="custom-checkbox__icon"></span>
                 <span className="custom-checkbox__label">Плёночная</span>
@@ -199,7 +203,9 @@ function CatalogFilter(props: CatalogFilterProps): JSX.Element {
               </label>
             </div>
           </fieldset>
-          <button className="btn catalog-filter__reset-btn" type="reset" onClick={onFilterReset}>
+          <button className="btn catalog-filter__reset-btn" type="reset" onClick={onFilterReset}
+            disabled={!isFilterResetButtonActive}
+          >
             Сбросить фильтры
           </button>
         </form>
