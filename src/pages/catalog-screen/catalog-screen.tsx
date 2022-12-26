@@ -141,11 +141,7 @@ function CatalogScreen(): JSX.Element {
     }, []
   );
 
-  const closeAddItemModal = useCallback(
-    () => {
-      setAddItemModalOpen(false);
-    }, []
-  );
+  const closeAddItemModal = useCallback(() => setAddItemModalOpen(false), []);
 
   if (isLoading || isInitialLoading || isPromoLoading) {
     return (<LoadingScreen />);

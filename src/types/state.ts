@@ -16,6 +16,7 @@ export type CamerasData = {
 export type BasketData = {
   basketItems: BasketItem[];
   isAddSuccessModalOpen: boolean;
+  isOrderSuccessModalOpen: boolean;
   isPosting: boolean;
   invalidCoupon: boolean;
   coupon: string | null;

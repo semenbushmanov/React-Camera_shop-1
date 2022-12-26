@@ -3,6 +3,7 @@ import { AppRoute } from '../../const';
 import CatalogScreen from '../../pages/catalog-screen/catalog-screen';
 import ItemScreen from '../../pages/item-screen/item-screen';
 import BasketScreen from '../../pages/basket-screen/basket-screen';
+import OrderFailScreen from '../../pages/order-fail-screen/order-fail-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 
 function App(): JSX.Element {
@@ -23,6 +24,10 @@ function App(): JSX.Element {
       <Route
         path={AppRoute.Basket}
         element={<BasketScreen />}
+      />
+      <Route
+        path={AppRoute.OrderFail}
+        element={<OrderFailScreen />}
       />
       <Route
         path="*"

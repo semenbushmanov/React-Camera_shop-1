@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { postCouponAction } from '../api-actions';
+import { postCouponAction, postOrderAction } from '../api-actions';
 import { NameSpace, Settings } from '../../const';
 import { BasketData } from '../../types/state';
 import { BasketItem } from '../../types/basket';
@@ -8,6 +8,7 @@ import { BasketItem } from '../../types/basket';
 const initialState: BasketData = {
   basketItems: [],
   isAddSuccessModalOpen: false,
+  isOrderSuccessModalOpen: false,
   isPosting: false,
   invalidCoupon: false,
   coupon: null,
@@ -33,9 +34,6 @@ export const basket = createSlice({
       }
 
       state.isAddSuccessModalOpen = true;
-    },
-    closeAddSuccessModal: (state) => {
-      state.isAddSuccessModalOpen = false;
     },
     incrementQuantity: (state, action: PayloadAction<number>) => {
       const itemInBasket = state.basketItems.find((item) => item.id === action.payload);
@@ -65,6 +63,16 @@ export const basket = createSlice({
     resetCoupon: (state) => {
       state.invalidCoupon = false;
     },
+    closeAddSuccessModal: (state) => {
+      state.isAddSuccessModalOpen = false;
+    },
+    resetBasket: (state) => {
+      state.basketItems = [];
+      state.isOrderSuccessModalOpen = false;
+      state.invalidCoupon = false;
+      state.coupon = null;
+      state.discount = 0;
+    },
   },
   extraReducers(builder) {
     builder
@@ -81,9 +89,19 @@ export const basket = createSlice({
         state.invalidCoupon = true;
         state.coupon = null;
         state.discount = 0;
+      })
+      .addCase(postOrderAction.pending, (state) => {
+        state.isPosting = true;
+      })
+      .addCase(postOrderAction.fulfilled, (state) => {
+        state.isPosting = false;
+        state.isOrderSuccessModalOpen = true;
+      })
+      .addCase(postOrderAction.rejected, (state) => {
+        state.isPosting = false;
       });
   }
 });
 
-export const { addItem, closeAddSuccessModal, incrementQuantity, decrementQuantity,
-  setQuantity, removeItem, resetCoupon } = basket.actions;
+export const { addItem, incrementQuantity, decrementQuantity, setQuantity,
+  removeItem, resetCoupon, closeAddSuccessModal, resetBasket } = basket.actions;

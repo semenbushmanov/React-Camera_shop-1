@@ -3,7 +3,6 @@ import { NameSpace } from '../../const';
 import { Promo } from '../../types/camera';
 import { CamerasData } from '../../types/state';
 import { fetchOriginalCamerasAction, fetchCamerasAction, fetchPromoAction, postReviewAction } from '../api-actions';
-import { resetReviewSuccess } from '../action';
 
 const initialState: CamerasData = {
   originalCameras: [],
@@ -19,7 +18,11 @@ const initialState: CamerasData = {
 export const camerasData = createSlice({
   name: NameSpace.Data,
   initialState,
-  reducers: {},
+  reducers: {
+    resetReviewSuccess: (state) => {
+      state.reviewSuccess = false;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchOriginalCamerasAction.pending, (state) => {
@@ -61,9 +64,8 @@ export const camerasData = createSlice({
       })
       .addCase(postReviewAction.rejected, (state) => {
         state.isPosting = false;
-      })
-      .addCase(resetReviewSuccess, (state) => {
-        state.reviewSuccess = false;
       });
   }
 });
+
+export const { resetReviewSuccess } = camerasData.actions;

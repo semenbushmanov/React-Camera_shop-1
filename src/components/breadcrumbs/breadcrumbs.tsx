@@ -24,7 +24,8 @@ function BreadCrumbs({item}: BreadCrumbsProps): JSX.Element {
               </svg>
             </Link>
           </li>
-          <li className="breadcrumbs__item"><span className="breadcrumbs__link breadcrumbs__link--active">{item}</span>
+          <li className="breadcrumbs__item">
+            <span className="breadcrumbs__link breadcrumbs__link--active">{item}</span>
           </li>
         </ul>
       </div>

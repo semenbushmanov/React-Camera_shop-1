@@ -2,8 +2,9 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { Cameras, Promo, ReviewPost } from '../types/camera';
-import { Coupon, CouponPost } from '../types/basket';
-import { APIRoute } from '../const';
+import { Coupon, CouponPost, OrderPost } from '../types/basket';
+import { redirectToRoute } from './action';
+import { APIRoute, AppRoute } from '../const';
 
 export const fetchOriginalCamerasAction = createAsyncThunk<Cameras, undefined, {
   dispatch: AppDispatch;
@@ -62,5 +63,20 @@ export const postCouponAction = createAsyncThunk<Coupon, CouponPost, {
   async (couponPost, {dispatch, extra: api}) => {
     const {data} = await api.post<number>(APIRoute.Coupons, couponPost);
     return { coupon: couponPost.coupon, discount: data };
+  },
+);
+
+export const postOrderAction = createAsyncThunk<void, OrderPost, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/postOrder',
+  async (order, {dispatch, extra: api}) => {
+    try {
+      await api.post(APIRoute.Orders, order);
+    } catch {
+      dispatch(redirectToRoute(AppRoute.OrderFail));
+    }
   },
 );

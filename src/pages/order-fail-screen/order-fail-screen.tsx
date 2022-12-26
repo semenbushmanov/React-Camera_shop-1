@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
-function NotFoundScreen(): JSX.Element {
+function OrderFailScreen(): JSX.Element {
   return (
     <section>
-      <h1>404</h1>
-      <h3>Страница не найдена</h3>
+      <h3>Ошибка при отправке заказа</h3>
+      <h4>Побробуйте отправить заказ позже</h4>
       <Link to={AppRoute.Root}>Назад на главную страницу</Link>
     </section>
   );
 }
 
-export default NotFoundScreen;
+export default OrderFailScreen;

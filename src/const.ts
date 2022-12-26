@@ -5,6 +5,7 @@ export enum AppRoute {
   Item = '/item',
   ItemId = '/item/:id',
   Basket = '/basket',
+  OrderFail = '/fail',
 }
 
 export enum APIRoute {

@@ -6,6 +6,7 @@ describe('Reducer: basket', () => {
       .toEqual({
         basketItems: [],
         isAddSuccessModalOpen: false,
+        isOrderSuccessModalOpen: false,
         isPosting: false,
         invalidCoupon: false,
         coupon: null,
@@ -17,6 +18,7 @@ describe('Reducer: basket', () => {
     const state = {
       basketItems: [],
       isAddSuccessModalOpen: false,
+      isOrderSuccessModalOpen: false,
       isPosting: false,
       invalidCoupon: false,
       coupon: null,
@@ -27,6 +29,7 @@ describe('Reducer: basket', () => {
       .toEqual({
         basketItems: [{id: 5, quantity: 1}],
         isAddSuccessModalOpen: true,
+        isOrderSuccessModalOpen: false,
         isPosting: false,
         invalidCoupon: false,
         coupon: null,
