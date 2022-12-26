@@ -10,7 +10,15 @@ const mockStore = configureMockStore();
 const mockCamera = makeFakeCamera();
 
 const store = mockStore({
-  BASKET: {camerasIDs: []},
+  BASKET: {
+    basketItems: [],
+    isAddSuccessModalOpen: false,
+    isOrderSuccessModalOpen: false,
+    isPosting: false,
+    invalidCoupon: false,
+    coupon: null,
+    discount: 0,
+  },
 });
 
 

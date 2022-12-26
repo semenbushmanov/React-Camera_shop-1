@@ -33,6 +33,11 @@ const store = mockStore({
   BASKET: {
     basketItems: [],
     isAddSuccessModalOpen: false,
+    isOrderSuccessModalOpen: false,
+    isPosting: false,
+    invalidCoupon: false,
+    coupon: null,
+    discount: 0,
   },
   DATA: {
     originalCameras: [],

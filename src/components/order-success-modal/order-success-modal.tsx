@@ -67,8 +67,7 @@ function OrderSuccessModal({onClose}: OrderSuccessModalProps): JSX.Element {
           <div className="modal__buttons">
             <button className="btn btn--purple modal__btn modal__btn--fit-width" type="button"
               onClick={handleBackButtonClick} ref={backButton}
-            >
-                Вернуться к покупкам
+            >Вернуться к покупкам
             </button>
           </div>
           <button className="cross-btn" type="button" aria-label="Закрыть попап"

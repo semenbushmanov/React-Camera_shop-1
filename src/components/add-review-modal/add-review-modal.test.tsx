@@ -9,9 +9,12 @@ const mockStore = configureMockStore();
 
 const store = mockStore({
   DATA: {
+    originalCameras: [],
+    isInitialLoading: false,
     cameras: [],
     isDataLoading:false,
     promo: {} as Promo,
+    isPromoLoading: false,
     isPosting: false,
     reviewSuccess: false,
   },

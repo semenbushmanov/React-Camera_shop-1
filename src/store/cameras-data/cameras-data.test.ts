@@ -1,10 +1,11 @@
-import { camerasData } from './cameras-data';
-import { makeFakeCamera, makeFakePromo } from '../../utils/mocks';
-import { fetchOriginalCamerasAction, fetchCamerasAction, fetchPromoAction } from '../api-actions';
+import { camerasData, resetReviewSuccess } from './cameras-data';
+import { makeFakeCamera, makeFakePromo, makeFakeReviewPost } from '../../utils/mocks';
+import { fetchOriginalCamerasAction, fetchCamerasAction, fetchPromoAction, postReviewAction } from '../api-actions';
 import { Promo } from '../../types/camera';
 
 const fakeCameras = [ makeFakeCamera(), makeFakeCamera() ];
 const fakePromo = makeFakePromo();
+const fakeReviewPost = makeFakeReviewPost();
 
 describe('Reducer: camerasData', () => {
   it('should return initial state without additional parameters', () => {
@@ -90,6 +91,56 @@ describe('Reducer: camerasData', () => {
         cameras: [],
         isDataLoading:false,
         promo: fakePromo,
+        isPromoLoading: false,
+        isPosting: false,
+        reviewSuccess: false,
+      });
+  });
+
+  it('should set reviewSuccess true after posting review', () => {
+    const state = {
+      originalCameras: [],
+      isInitialLoading: false,
+      cameras: [],
+      isDataLoading:false,
+      promo: {} as Promo,
+      isPromoLoading: false,
+      isPosting: false,
+      reviewSuccess: false,
+    };
+
+    expect(camerasData.reducer(state, {type: postReviewAction.fulfilled.type, payload: fakeReviewPost}))
+      .toEqual({
+        originalCameras: [],
+        isInitialLoading: false,
+        cameras: [],
+        isDataLoading:false,
+        promo: {} as Promo,
+        isPromoLoading: false,
+        isPosting: false,
+        reviewSuccess: true,
+      });
+  });
+
+  it('should reset reviewSuccess false when resetReviewSuccess', () => {
+    const state = {
+      originalCameras: [],
+      isInitialLoading: false,
+      cameras: [],
+      isDataLoading:false,
+      promo: {} as Promo,
+      isPromoLoading: false,
+      isPosting: false,
+      reviewSuccess: true,
+    };
+
+    expect(camerasData.reducer(state, resetReviewSuccess()))
+      .toEqual({
+        originalCameras: [],
+        isInitialLoading: false,
+        cameras: [],
+        isDataLoading:false,
+        promo: {} as Promo,
         isPromoLoading: false,
         isPosting: false,
         reviewSuccess: false,

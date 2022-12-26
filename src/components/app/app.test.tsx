@@ -12,12 +12,19 @@ import thunk from 'redux-thunk';
 import App from './app';
 
 const mockStore = configureMockStore([thunk]);
+const history = createMemoryHistory();
 const mockAPI = new MockAdapter(api);
+window.scrollTo = jest.fn();
 
 const store = mockStore({
   BASKET: {
     basketItems: [],
     isAddSuccessModalOpen: false,
+    isOrderSuccessModalOpen: false,
+    isPosting: false,
+    invalidCoupon: false,
+    coupon: null,
+    discount: 0,
   },
   DATA: {
     originalCameras: [],
@@ -31,8 +38,6 @@ const store = mockStore({
   },
 });
 
-const history = createMemoryHistory();
-
 const fakeApp = (
   <Provider store={store}>
     <HistoryRouter history={history}>
@@ -42,6 +47,13 @@ const fakeApp = (
 );
 
 describe('Application Routing', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   it('should render "Catalog" when user navigates to "/"', () => {
     history.push(AppRoute.Root);
 
@@ -92,12 +104,21 @@ describe('Application Routing', () => {
     expect(screen.getByText('Оформить заказ')).toBeInTheDocument();
   });
 
+  it('should render "OrderFailScreen" when user is redirected to "/fail"', () => {
+    history.push(AppRoute.OrderFail);
+
+    render(fakeApp);
+
+    expect(screen.getByText('Ошибка при отправке заказа')).toBeInTheDocument();
+    expect(screen.getByText('Назад на главную страницу')).toBeInTheDocument();
+  });
+
   it('should render "NotFoundScreen" when user navigates to non-existent route', () => {
     history.push('/non-existent-route');
 
     render(fakeApp);
 
     expect(screen.getByText('404')).toBeInTheDocument();
-    expect(screen.getByText('Back to Homepage')).toBeInTheDocument();
+    expect(screen.getByText('Назад на главную страницу')).toBeInTheDocument();
   });
 });
